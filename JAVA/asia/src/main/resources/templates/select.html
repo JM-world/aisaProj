@@ -1,10 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>설문조사시작</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		.btn-light {
+			font-size: 20px;
+			padding: 12px 20px; /* 더 큰 크기로 조정 */
+		}
+		.btn-info {
+			background-color: lightblue; /* 선택시의 배경색 */
+			border-color:black; /* 선택시의 테두리색 */
+		}
+	</style>
 </head>
 <body>
-	<h1>선택화면</h1>
-</body>
+	
+	<section class="main">
+	  <div class="profile-card">
+	    <div class="image">
+	      <!--<img src="images/profile.jpg" alt="" class="profile-pic">-->
+	    </div>
+	    <div class="user_info">
+	      <h2 style="font-size: 38px; font-weight: 600;">성별을 선택해주세요</h2>
+	  	   <div class="button-group" style="position: absolute; top: 300px; left: 50%; transform: translateX(-50%);">
+	        <button id="maleButton" class="btn btn-light" onclick="toggleButton('maleButton')">남자</button>
+        <button id="femaleButton" class="btn btn-light" onclick="toggleButton('femaleButton')">여자</button>
+      	  </div>
+  
+		<div class="user_age" style="position: absolute; top: 400px; left: 50%; transform: translateX(-50%); margin-top: 20px;">
+		  <h2 style="font-size: 38px; font-weight: 600;">나이를 입력해주세요</h2>
+		    <div class="input-group input-group-lg" style="width: 200px; margin: 0 auto;">
+			  <input type="text" id="ageInput" class="form-control" placeholder="Userage" aria-label="나이" aria-describedby="inputGroup-sizing-lg">
+			  <span class="input-group-text" id="inputGroup-sizing-lg">세</span>
+			</div>
+	</div>
+	  <div class="buttons" style="position: absolute; top: 600px; left: 50%; transform: translateX(-50%);">
+	      <button class="btn btn-primary" onclick="checkInputs()">설문 시작</button>
+	    </div>
+	  </div>
+	</section>
+	
+	  <!-- Bootstrap 스크립트 추가 -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
+	<script>
+	 var selectedButtonId = null;
+
+	function toggleButton(clickedButtonId) {
+	    // 선택된 버튼에 토글 클래스 적용
+	    document.getElementById(clickedButtonId).classList.toggle('btn-info');
+	
+	    // 이전에 선택된 버튼의 토글 클래스 제거
+	    if (selectedButtonId && selectedButtonId !== clickedButtonId) {
+	        document.getElementById(selectedButtonId).classList.remove('btn-info');
+	    }
+	
+	    // 현재 선택된 버튼을 저장
+	    selectedButtonId = clickedButtonId;
+	}
+
+
+
+	  function checkInputs() {
+	    // 성별과 나이 입력 여부 확인
+	    var maleButton = document.getElementById('maleButton');
+	    var femaleButton = document.getElementById('femaleButton');
+	    var ageInput = document.getElementById('ageInput').value;
+	
+	    if (!(maleButton.classList.contains('btn-info') || femaleButton.classList.contains('btn-info'))) {
+	      alert('성별을 선택해주세요.');
+	    } else if (!ageInput || isNaN(ageInput)) {
+	      alert('나이를 올바르게 입력해주세요.');
+	    } else {
+	      window.location.href = "/survey";
+	    }
+	  }
+</script>
+
+	</body>
 </html>
