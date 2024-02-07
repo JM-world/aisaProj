@@ -22,28 +22,33 @@
   <section class="main">
     <div class="profile-card">
 		<div class="questionList" >
-      <!-- <div class="questionList" th:each="question : ${questionList}">
-        <h1 th:text="${question.text}"></h1>-->
-          	<h1> 질문 1 ? </h1>
-			   <div class="answer">
-		            <input type="radio" name="q1" value="1" class="r1"> 전혀 그렇지 않다
-		            <input type="radio" name="q1" value="2" class="r1"> 그렇지 않다
-		            <input type="radio" name="q1" value="3" class="r1"> 보통이다
-		            <input type="radio" name="q1" value="4" class="r1"> 그렇다
-		            <input type="radio" name="q1" value="5" class="r1"> 매우 그렇다
-		        </div>
+      	<div class="questionList" th:each="question,loop : ${questionList}">
+	        <h5 th:text="${loop.count}"></h5>
+	        <h3 th:text="${question.question}"></h3>
+	      
+
+     		<div class="answer">
+	            <input type="radio" name="q1" value="1" class="r1"> 전혀 그렇지 않다
+	            <input type="radio" name="q1" value="2" class="r1"> 그렇지 않다
+	            <input type="radio" name="q1" value="3" class="r1"> 보통이다
+	            <input type="radio" name="q1" value="4" class="r1"> 그렇다
+	            <input type="radio" name="q1" value="5" class="r1"> 매우 그렇다
+            </div>
+            <br>
 		        
 	       <!-- <div class="answer" th:each="option : ${question.options}">
            <input type="radio" th:name="${question.text}" th:value="${option.value}" class="r1"> <span th:text="${option.text}"></span>-->
-	        <div class="pagination">
+           
+	        <!-- <div class="pagination">
 			    <a href="#" class="disabled" id="prevBtn">❮</a>
         		<a href="#" id="nextBtn">❯</a>
+			</div> -->
 			</div>
     	</div>
     </div>
   </section>
 	      
- <script>
+ <!-- <script>
     // 페이지네이션 버튼과 현재 페이지 상태를 추적하는 변수들
     var currentPage = 1;
     var totalQuestions = 3; // 전체 질문 수
@@ -90,7 +95,7 @@
     // 이벤트 리스너 추가
     document.getElementById('prevBtn').addEventListener('click', prevPage);
     document.getElementById('nextBtn').addEventListener('click', nextPage);
-  </script>
+  </script> -->
 
 </body>
 </html>
