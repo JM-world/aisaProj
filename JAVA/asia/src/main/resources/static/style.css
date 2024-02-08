@@ -79,27 +79,33 @@
 }
 
 
+#loadingbar
+#back{    
+	position: fixed;    
+    z-index: 5;    
+    background-color: rgba(0, 0, 0, 0.3);    
+    display: none;    
+    left: 0;    
+    top: 0;    
+    width: 30%;    
+    height: 30%;    
+    overflow: hidden; /* 스크롤바가 나타나지 않도록 */  
+}   
+#loadingBar{    
+	position: fixed;    
+    top: 50%;    
+    left: 50%;    
+    transform: translate(-50%, -50%);    
+    padding: 20px;    
+    background-color: white;    
+    display: none;    
+    z-index: 200;    
+ }
 
-.pagination {
-  display: inline-block;
+#loadingBar img {
+    width: 500px;
+    height: auto;
 }
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-  transition: background-color .3s;
-  border: 1px solid #ddd;
-}
-
-.pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid #4CAF50;
-}
-
-
 
 @media (max-width: 768px) {
   .profile-card {

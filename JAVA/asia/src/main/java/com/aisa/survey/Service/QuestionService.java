@@ -1,9 +1,5 @@
 package com.aisa.survey.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.aisa.survey.entity.Question;
@@ -16,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 public class QuestionService {
 	
 	private final QuestionRepository questionRepository;
+	
+	
 	
 
 }

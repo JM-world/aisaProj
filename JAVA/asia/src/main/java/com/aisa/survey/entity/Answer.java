@@ -64,4 +64,6 @@ public class Answer {
 	
 	private Integer a20;
 	
+	private Integer a21;
+	
 }

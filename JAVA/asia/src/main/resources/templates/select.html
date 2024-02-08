@@ -25,28 +25,30 @@
 	</style>
 </head>
 <body>
-	
 	<section class="main">
+	<form id="startForm" th:action="@{/select}" th:object="${requestDto}" method="post">
         <div class="profile-card">
             <div class="user_info">
                 <h2 style="font-size: 38px; font-weight: 600; padding-top: 100px;">성별을 선택해주세요</h2>
                 <div class="button-group" style="margin-top: 30px;">
-                    <button id="maleButton" class="btn btn-light" onclick="toggleButton('maleButton')">남자</button>
-                    <button id="femaleButton" class="btn btn-light" onclick="toggleButton('femaleButton')">여자</button>
+                    <button id="maleButton" type="button" class="btn btn-light" onclick="toggleButton('maleButton')">남자</button>
+                    <button id="femaleButton" type="button" class="btn btn-light" onclick="toggleButton('femaleButton')">여자</button>
+                    <input type="hidden" id="hidden_gender" th:field="*{gender}" value="">
                 </div>
             </div>
             <div class="user_age" style="margin-top: 50px;">
                 <h2 style="font-size: 38px; font-weight: 600;">나이를 입력해주세요</h2>
                 <div class="input-group input-group-lg" style="width: 200px; margin: 0 auto; margin-top: 20px;">
                     <input type="text" id="ageInput" class="form-control" placeholder="Userage" aria-label="나이"
-                           aria-describedby="inputGroup-sizing-lg" >
+                           aria-describedby="inputGroup-sizing-lg" th:field="*{age}">
                     <span class="input-group-text" id="inputGroup-sizing-lg">세</span>
                 </div>
             </div>
             <div class="buttons" style="margin-top: 70px;">
-                <button class="btn" onclick="checkInputs()">설문 시작</button>
+                <button type="button" class="btn" onclick="checkInputs()">설문 시작</button>
             </div>
 	    </div>
+	</form>
 	</section>
 	
 	  <!-- Bootstrap 스크립트 추가 -->
@@ -68,6 +70,14 @@
 	
 	    // 현재 선택된 버튼을 저장
 	    selectedButtonId = clickedButtonId;
+	    	    
+	    let gender = document.getElementById("hidden_gender");
+	    
+	    if(selectedButtonId === 'maleButton'){
+			gender.value = "1";
+		} else {
+			gender.value = "2";
+		}
 	}
 
 
@@ -83,7 +93,7 @@
 	    } else if (!ageInput || isNaN(ageInput)) {
 	      alert('나이를 올바르게 입력해주세요.');
 	    } else {
-	      window.location.href = "/survey";
+	      document.getElementById('startForm').submit();
 	    }
 	  }
 </script>
