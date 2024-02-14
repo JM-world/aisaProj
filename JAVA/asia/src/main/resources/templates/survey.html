@@ -21,22 +21,22 @@
 <body>
   <section class="main">
     <div class="profile-card">
-		<form th:action="@{/survey}" method="post" id="surveForm">
+		<form th:action="@{|/survey/${page}|}" method="post">
 		    <div class="questionList">
 	 			<!-- questionList를 순회하며 각 질문을 출력 -->
                 <th:block th:each="question : ${questionList}">
-                	 <div th:if="${question.questionId} < 7">
+                	 
                      <h5 th:text="${question.questionId}" style="display: inline;"></h5>
                      <h4 th:text="${question.question}" style="display: inline;"></h4>
                      <div class="answer" style="margin-top:10px;">
                          <!-- 답변 입력 폼 -->
-                         <input type="radio" th:name="${question.questionId}" th:value="1" class="r1"> 전혀 그렇지 않다 &nbsp;
-                         <input type="radio" th:name="${question.questionId}" th:value="2" class="r1"> 그렇지 않다 &nbsp;
-                         <input type="radio" th:name="${question.questionId}" th:value="3" class="r1"> 보통이다 &nbsp;
-                         <input type="radio" th:name="${question.questionId}" th:value="4" class="r1"> 그렇다 &nbsp;
-                         <input type="radio" th:name="${question.questionId}" th:value="5" class="r1"> 매우 그렇다 &nbsp;
+                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="1" class="r1"> 전혀 그렇지 않다 &nbsp;
+                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="2" class="r1"> 그렇지 않다 &nbsp;
+                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="3" class="r1"> 보통이다 &nbsp;
+                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="4" class="r1"> 그렇다 &nbsp;
+                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="5" class="r1"> 매우 그렇다 &nbsp;
                      </div> <br><br>
-                     </div>
+                     
                 </th:block>
             </div>
             <br>

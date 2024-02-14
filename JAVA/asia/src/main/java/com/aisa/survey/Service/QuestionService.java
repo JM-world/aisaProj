@@ -1,4 +1,4 @@
-package com.aisa.survey.Service;
+package com.aisa.survey.service;
 
 import org.springframework.stereotype.Service;
 

@@ -28,6 +28,7 @@
   padding: 30px;
   border: 1px solid #ffffff40;
   box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  background-color: linen;
 }
 .image{
   position: relative;

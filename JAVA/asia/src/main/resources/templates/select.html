@@ -26,8 +26,8 @@
 </head>
 <body>
 	<section class="main">
-	<form id="startForm" th:action="@{/select}" th:object="${requestDto}" method="post">
         <div class="profile-card">
+			<form id="startForm" th:action="@{/select}" th:object="${requestDto}" method="post">
             <div class="user_info">
                 <h2 style="font-size: 38px; font-weight: 600; padding-top: 100px;">성별을 선택해주세요</h2>
                 <div class="button-group" style="margin-top: 30px;">
@@ -47,8 +47,8 @@
             <div class="buttons" style="margin-top: 70px;">
                 <button type="button" class="btn" onclick="checkInputs()">설문 시작</button>
             </div>
+		</form>
 	    </div>
-	</form>
 	</section>
 	
 	  <!-- Bootstrap 스크립트 추가 -->
