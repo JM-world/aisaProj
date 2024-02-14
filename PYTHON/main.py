@@ -3,16 +3,17 @@ from langchain.schema import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 import openai
 import os
+from prisma.models import User
 
 # OpenAI API(유료, API 키 값은 보안을 위해 .env에 입력)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # DeepL API key(무료 버전, 월 50만 토큰까지 무료 번역) 
 import deepl
 deepl_key = "3d58744a-d5cd-fd8c-e078-015c393b54f4:fx"
-translator = deepl.Translator(deepl_key)  
+translator = deepl.Translator(deepl_key)
 
 # 초기값
-time = 0   # 총 답변 시간
+elapsedTime = 0   # 총 답변 시간
 R_list = ["전혀 그렇지 않다.", "그렇지 않다.", "보통이다.", "그렇다.", "매우 그렇다."] # 답변지
 # 비판적사고 능력 질문지
 Q_list1 = ["내가 한 행동이 나중에 어떤 결과를 가져올지 예상할 수 있다.",
@@ -31,7 +32,8 @@ Q_list2 = [
     "나는 상대방의 표정과 몸짓을 살피면서 속마음을 이해한다 .",
     "나는 대화할 때 이야기를 잘 듣고 있다는 것을 말이나 몸짓으로 보여준다 .",
     "나는 대화를 할 때 어떻게 말할지 미리 생각하고 말한다 .",
-    "나는 듣는 사람이 이해할 수 있도록 쉽고 정확한 말을 골라 이야기 한다 ."
+    "나는 듣는 사람이 이해할 수 있도록 쉽고 정확한 말을 골라 이야기 한다 .",
+    "나는 듣는 사람이 잘 이해할 수 있도록 예를 들어 설명한다."
 ]
 # 창의적사고 능력 질문지
 Q_list3 = [
@@ -53,10 +55,13 @@ def send_survey_results(all_sentence):
     # 챗봇 역할 지정
     system_message_template = SystemMessagePromptTemplate.from_template(
         template=f"""You are responding to a survey.
-Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
-        1. It takes approximately 20 seconds to complete the survey. If it takes less than this, it is highly likely that the person skimmed through the questions and skipped over them.
+        Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
+        1. It takes approximately 30 seconds to complete the survey. If it takes less than this, it is highly likely
+        that the person skimmed through the questions and skipped over them.
         2. If the same answer was given to all questions, there is a high possibility that the person skipped this survey.
-        3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
+        3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, 
+        but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
+        *The nudge form is to speak like a woman, like a woman, and if you are a man, like a man, speak briefly and briefly summarize the person's answer.
         """ )
 
     # 사람 입력 데이터 양식
@@ -80,7 +85,7 @@ Briefly analyze and summarize how reliable the respondent's answer is based on t
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=messages_dict,
-        max_tokens=100,
+        max_tokens=1000,
         n=1,
         stop=None,
         temperature=0.7,
@@ -105,30 +110,31 @@ from pydantic import BaseModel
 
 # 백엔드로부터 받을 데이터(예상)
 class Item(BaseModel):
-    id : int           # 주제
-    Q1 : int           # 번호
+    id : int | None = None          # auto increment
+    userId : int        # Spring에서 받아오는 id
+    Q1 : int            # 번호
     Q2 : int
     Q3 : int
     Q4 : int
     Q5 : int
     Q6 : int
-    time : int         # 총 답변 시간
+    elapsedTime : int      # 총 답변 시간
 
 # FastAPI 클래스 객체 생성
 app = FastAPI()
 
 # 백엔드 서버 주소
-origins = [
-    "http://localhost:3000",
-    # "http://127.0.0.1:3000",
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# origins = [
+#     "http://localhost:3000",
+#     # "http://127.0.0.1:3000",
+# ]
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 # REST API
 # 시작 화면
@@ -166,14 +172,14 @@ async def create_user_db(item: Item) -> None:
     item_dict = item.model_dump()
     user = await db.user.create(
         {
-        # 'id': item_dict['id'],
+        'userId': item_dict['userId'],
         'Q1': item_dict['Q1'],
         'Q2': item_dict['Q2'],
         'Q3': item_dict['Q3'],
         'Q4': item_dict['Q4'],
         'Q5': item_dict['Q5'],
         'Q6': item_dict['Q6'],
-        'time': item_dict['time']
+        'elapsedTime': item_dict['elapsedTime']
         }        
     )
     print(f'created user: {user.model_dump_json(indent=2)}')
@@ -199,14 +205,14 @@ async def put_user_db(path: int, item: Item) -> None:
                 'id': path,
             },
         data={
-        'id': item_dict['id'],
+        'userId': item_dict['userId'],
         'Q1': item_dict['Q1'],
         'Q2': item_dict['Q2'],
         'Q3': item_dict['Q3'],
         'Q4': item_dict['Q4'],
         'Q5': item_dict['Q5'],
         'Q6': item_dict['Q6'],
-        'time': item_dict['time']
+        'elapsedTime': item_dict['elapsedTime']
         }, 
 
     )
@@ -233,7 +239,7 @@ async def delete_user_db(path: int, item: Item) -> None:
                 'id': path,
             },
     )
-    print(f'updated user: {user.model_dump_json(indent=2)}')
+    print(f'deleted user: {user.model_dump_json(indent=2)}')
 
     await db.disconnect()
 
@@ -247,23 +253,22 @@ async def create_user_answer(item: Item) -> None:
     item_dict = item.model_dump()
     db = Prisma()
     await db.connect()
-    found = await db.user.find_unique(where={'id': item_dict['id']})
+    found = await db.user.find_first(where={'userId': item_dict['userId']})
     print(found)
     # 기존에 이미 답변이 존재한다면 수정
     if found:
-        user = await db.user.update(
+        user = await db.user.update_many(
             where={
-                    'id': item_dict['id'],
+                    'userId': item_dict['userId']
                 },
             data={
-            'id': item_dict['id'],
             'Q1': item_dict['Q1'],
             'Q2': item_dict['Q2'],
             'Q3': item_dict['Q3'],
             'Q4': item_dict['Q4'],
             'Q5': item_dict['Q5'],
             'Q6': item_dict['Q6'],
-            'time': item_dict['time']
+            'elapsedTime': item_dict['elapsedTime']
             }, 
 
         )
@@ -271,36 +276,41 @@ async def create_user_answer(item: Item) -> None:
     else:
         user = await db.user.create(
             {
-            'id': item_dict['id'],
+            'userId': item_dict['userId'],
             'Q1': item_dict['Q1'],
             'Q2': item_dict['Q2'],
             'Q3': item_dict['Q3'],
             'Q4': item_dict['Q4'],
             'Q5': item_dict['Q5'],
             'Q6': item_dict['Q6'],
-            'time': item_dict['time']
+            'elapsedTime': item_dict['elapsedTime']
             }        
         )
-    if item_dict['id'] == 1:
-        Q_list = Q_list1
-    elif item_dict['id'] == 2:
-        Q_list = Q_list2
-    else:
-        Q_list = Q_list3    
-    QR_list.append(f"주제 : {subject[item_dict['id']]}")
-    QR_list.append(f"질문1. {Q_list[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
-    QR_list.append(f"질문2. {Q_list[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
-    QR_list.append(f"질문3. {Q_list[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
-    QR_list.append(f"질문4. {Q_list[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
-    QR_list.append(f"질문5. {Q_list[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
-    QR_list.append(f"질문6. {Q_list[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
-    QR_list.append(f"총 설문 시간 : {item_dict['time']}초")
+    # if item_dict['id'] == 1:
+    #     Q_list = Q_list1
+    # elif item_dict['id'] == 2:
+    #     Q_list = Q_list2
+    # else:
+    #     Q_list = Q_list3
+    QR_list.append(f"주제 : {subject[0]}")
+    QR_list.append(f"질문1. {Q_list1[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
+    QR_list.append(f"질문2. {Q_list1[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
+    QR_list.append(f"질문3. {Q_list1[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
+    QR_list.append(f"질문4. {Q_list1[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
+    QR_list.append(f"질문5. {Q_list1[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
+    QR_list.append(f"질문6. {Q_list1[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
+    QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
     
     all_sentence = '\n'.join(QR_list)
     print(all_sentence)
     
     user = {
-        f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
+        f"Answer": send_survey_results(all_sentence)
+        # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
         }        
     return user
 #####################################################################
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port = 8000, reload=True)
