@@ -9,8 +9,8 @@ from prisma.models import User
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # DeepL API key(무료 버전, 월 50만 토큰까지 무료 번역) 
 import deepl
-deepl_key = "3d58744a-d5cd-fd8c-e078-015c393b54f4:fx"
-translator = deepl.Translator(deepl_key)
+deepl_key = "3d58744a-d5cd-fd8c-e078-015c393b54f4:fx"   # 무료 버젼
+translator = deepl.Translator(deepl_key)                # Deeple 객체 생성
 
 # 초기값
 elapsedTime = 0   # 총 답변 시간
@@ -44,25 +44,49 @@ Q_list3 = [
     "나는 그동안 경험하지 못한 일을 할 기회가 생기면 해보고 싶다.",
     "나는 궁금한 것을 못 참는다."
 ]
-QR_list = [] # 질문 + 답변 값을 담을 리스트
+
 subject = ["다음 질문들은 설문자의 '비판적사고 능력'을 파악하는 질문들입니다.",
            "다음 질문들은 설문자의 '의사소통 능력'을 파악하는 질문들입니다.", 
            "다음 질문들은 설문자의 '창의적사고 능력'을 파악하는 질문들입니다." ]  # 큰 주제
 
 # 설문에 따른 넛지 생성 함수
-def send_survey_results(all_sentence):
+def send_survey_results(all_sentence, question_set):
     # OpenAI GPT-3.5 Turbo을 사용하여 챗봇 응답 생성
     # 챗봇 역할 지정
-    system_message_template = SystemMessagePromptTemplate.from_template(
-        template=f"""You are responding to a survey.
-        Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
-        1. It takes approximately 30 seconds to complete the survey. If it takes less than this, it is highly likely
-        that the person skimmed through the questions and skipped over them.
-        2. If the same answer was given to all questions, there is a high possibility that the person skipped this survey.
-        3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, 
-        but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
-        *The nudge form is to speak like a woman, like a woman, and if you are a man, like a man, speak briefly and briefly summarize the person's answer.
-        """ )
+
+    if question_set == 1:
+        system_message_template = SystemMessagePromptTemplate.from_template(
+            template=f"""You are responding to a survey.
+            Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
+            1. It takes approximately 30 seconds to complete the survey. If it takes less than this, it is highly likely
+            that the person skimmed through the questions and skipped over them.
+            2. If the same answer was given to all questions, there is a high possibility that the person skipped this survey.
+            3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, 
+            but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
+            *The nudge form is to speak like a woman, like a woman, and if you are a man, like a man, speak briefly and briefly summarize the person's answer.
+            """ )
+    elif question_set == 2:
+        system_message_template = SystemMessagePromptTemplate.from_template(
+            template=f"""You are responding to a survey.
+            Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
+            1. It takes approximately 30 seconds to complete the survey. If it takes less than this, it is highly likely
+            that the person skimmed through the questions and skipped over them.
+            2. If the same answer was given to all questions, there is a high possibility that the person skipped this survey.
+            3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, 
+            but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
+            *The nudge form is to speak like a woman, like a woman, and if you are a man, like a man, speak briefly and briefly summarize the person's answer.
+            """ )
+    else:
+        system_message_template = SystemMessagePromptTemplate.from_template(
+            template=f"""You are responding to a survey.
+            Briefly analyze and summarize how reliable the respondent's answer is based on the conditions below.
+            1. It takes approximately 30 seconds to complete the survey. If it takes less than this, it is highly likely
+            that the person skimmed through the questions and skipped over them.
+            2. If the same answer was given to all questions, there is a high possibility that the person skipped this survey.
+            3. This survey is about critical thinking skills. If this person answers that their critical thinking is very high in one question, 
+            but answers that their critical thinking is very low in another question, this person may have skimmed the survey.
+            *The nudge form is to speak like a woman, like a woman, and if you are a man, like a man, speak briefly and briefly summarize the person's answer.
+            """ )
 
     # 사람 입력 데이터 양식
     human_message_template = HumanMessagePromptTemplate.from_template(template="{text}")
@@ -112,12 +136,27 @@ from pydantic import BaseModel
 class Item(BaseModel):
     id : int | None = None          # auto increment
     userId : int        # Spring에서 받아오는 id
-    Q1 : int            # 번호
-    Q2 : int
-    Q3 : int
-    Q4 : int
-    Q5 : int
-    Q6 : int
+    Q1 : int | None = None           # 번호
+    Q2 : int | None = None
+    Q3 : int | None = None
+    Q4 : int | None = None
+    Q5 : int | None = None
+    Q6 : int | None = None
+    Q7 : int | None = None           # 번호
+    Q8 : int | None = None
+    Q9 : int | None = None
+    Q10 : int | None = None
+    Q11 : int | None = None
+    Q12 : int | None = None
+    Q13 : int | None = None          # 번호
+    Q14 : int | None = None
+    Q15 : int | None = None
+    Q16 : int | None = None
+    Q17 : int | None = None
+    Q18 : int | None = None
+    Q19 : int | None = None
+    Q20 : int | None = None
+    Q21 : int | None = None
     elapsedTime : int      # 총 답변 시간
 
 # FastAPI 클래스 객체 생성
@@ -256,7 +295,8 @@ async def create_user_answer(item: Item) -> None:
     found = await db.user.find_first(where={'userId': item_dict['userId']})
     print(found)
     # 기존에 이미 답변이 존재한다면 수정
-    if found:
+    QR_list = [] # 질문 + 답변 값을 담을 리스트
+    if found and item.Q1 is not None:
         user = await db.user.update_many(
             where={
                     'userId': item_dict['userId']
@@ -272,6 +312,118 @@ async def create_user_answer(item: Item) -> None:
             }, 
 
         )
+        QR_list.append(f"주제 : {subject[0]}")
+        QR_list.append(f"질문1. {Q_list1[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
+        QR_list.append(f"질문2. {Q_list1[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
+        QR_list.append(f"질문3. {Q_list1[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
+        QR_list.append(f"질문4. {Q_list1[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
+        QR_list.append(f"질문5. {Q_list1[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
+        QR_list.append(f"질문6. {Q_list1[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
+        QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
+    
+        all_sentence = '\n'.join(QR_list)
+        print(all_sentence)
+        
+        ai_answer = {
+            f"Answer": send_survey_results(all_sentence, 1)
+            # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
+            }        
+        return ai_answer
+    
+    elif found and item.Q7 is not None:
+        user = await db.user.update_many(
+            where={
+                    'userId': item_dict['userId']
+                },
+            data={
+            'Q7': item_dict['Q7'],
+            'Q8': item_dict['Q8'],
+            'Q9': item_dict['Q9'],
+            'Q10': item_dict['Q10'],
+            'Q11': item_dict['Q11'],
+            'Q12': item_dict['Q12'],
+            'Q13': item_dict['Q13'],
+            'Q14': item_dict['Q14'],
+            'Q15': item_dict['Q15'],
+            'elapsedTime': item_dict['elapsedTime']
+            }, 
+
+        )
+        QR_list.append(f"주제 : {subject[1]}")
+        QR_list.append(f"질문7. {Q_list2[0]}" + " | " + f"답변 : {R_list[item_dict['Q7']-1]}")
+        QR_list.append(f"질문8. {Q_list2[1]}" + " | " + f"답변 : {R_list[item_dict['Q8']-1]}")
+        QR_list.append(f"질문9. {Q_list2[2]}" + " |"  + f"답변 : {R_list[item_dict['Q9']-1]}")
+        QR_list.append(f"질문10. {Q_list2[3]}" + " | " + f"답변 : {R_list[item_dict['Q10']-1]}")
+        QR_list.append(f"질문11. {Q_list2[4]}" + " | " + f"답변 : {R_list[item_dict['Q11']-1]}")
+        QR_list.append(f"질문12. {Q_list2[5]}" + " | " + f"답변 : {R_list[item_dict['Q12']-1]}")
+        QR_list.append(f"질문13. {Q_list2[6]}" + " | " + f"답변 : {R_list[item_dict['Q13']-1]}")
+        QR_list.append(f"질문14. {Q_list2[7]}" + " | " + f"답변 : {R_list[item_dict['Q14']-1]}")
+        QR_list.append(f"질문15. {Q_list2[8]}" + " | " + f"답변 : {R_list[item_dict['Q15']-1]}")
+        QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
+    
+        all_sentence = '\n'.join(QR_list)
+        print(all_sentence)
+        
+        ai_answer = {
+            f"Answer": send_survey_results(all_sentence, 2)
+            # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
+            }        
+        return ai_answer
+    
+    elif found and item.Q16 is not None:
+        await db.user.update_many(
+            where={
+                    'userId': item_dict['userId']
+                },
+            data={
+            'Q16': item_dict['Q16'],
+            'Q17': item_dict['Q17'],
+            'Q18': item_dict['Q18'],
+            'Q19': item_dict['Q19'],
+            'Q20': item_dict['Q20'],
+            'Q21': item_dict['Q21'],
+            'elapsedTime': item_dict['elapsedTime']
+            }, 
+
+        )
+
+        user_data = await db.user.find_many(where={'userId': item_dict['userId']})
+
+        item_dict = user_data[0].model_dump()
+
+        QR_list.append(f"주제 : {subject[0], subject[1], subject[2]}")
+        QR_list.append(f"질문1. {Q_list1[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
+        QR_list.append(f"질문2. {Q_list1[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
+        QR_list.append(f"질문3. {Q_list1[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
+        QR_list.append(f"질문4. {Q_list1[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
+        QR_list.append(f"질문5. {Q_list1[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
+        QR_list.append(f"질문6. {Q_list1[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
+        QR_list.append(f"질문7. {Q_list2[0]}" + " | " + f"답변 : {R_list[item_dict['Q7']-1]}")
+        QR_list.append(f"질문8. {Q_list2[1]}" + " | " + f"답변 : {R_list[item_dict['Q8']-1]}")
+        QR_list.append(f"질문9. {Q_list2[2]}" + " |"  + f"답변 : {R_list[item_dict['Q9']-1]}")
+        QR_list.append(f"질문10. {Q_list2[3]}" + " | " + f"답변 : {R_list[item_dict['Q10']-1]}")
+        QR_list.append(f"질문11. {Q_list2[4]}" + " | " + f"답변 : {R_list[item_dict['Q11']-1]}")
+        QR_list.append(f"질문12. {Q_list2[5]}" + " | " + f"답변 : {R_list[item_dict['Q12']-1]}")
+        QR_list.append(f"질문13. {Q_list2[6]}" + " | " + f"답변 : {R_list[item_dict['Q13']-1]}")
+        QR_list.append(f"질문14. {Q_list2[7]}" + " | " + f"답변 : {R_list[item_dict['Q14']-1]}")
+        QR_list.append(f"질문15. {Q_list2[8]}" + " | " + f"답변 : {R_list[item_dict['Q15']-1]}")
+        QR_list.append(f"질문16. {Q_list3[0]}" + " | " + f"답변 : {R_list[item_dict['Q16']-1]}")
+        QR_list.append(f"질문17. {Q_list3[1]}" + " |"  + f"답변 : {R_list[item_dict['Q17']-1]}")
+        QR_list.append(f"질문18. {Q_list3[2]}" + " | " + f"답변 : {R_list[item_dict['Q18']-1]}")
+        QR_list.append(f"질문19. {Q_list3[3]}" + " | " + f"답변 : {R_list[item_dict['Q19']-1]}")
+        QR_list.append(f"질문20. {Q_list3[4]}" + " | " + f"답변 : {R_list[item_dict['Q20']-1]}")
+        QR_list.append(f"질문21. {Q_list3[5]}" + " | " + f"답변 : {R_list[item_dict['Q21']-1]}")
+        QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
+    
+        all_sentence = '\n'.join(QR_list)
+        print(all_sentence)
+        
+        ai_answer = {
+            f"Answer": send_survey_results(all_sentence, 3)
+            # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
+            }        
+        return ai_answer
+
     # 처음 답변한다면 생성
     else:
         user = await db.user.create(
@@ -286,30 +438,23 @@ async def create_user_answer(item: Item) -> None:
             'elapsedTime': item_dict['elapsedTime']
             }        
         )
-    # if item_dict['id'] == 1:
-    #     Q_list = Q_list1
-    # elif item_dict['id'] == 2:
-    #     Q_list = Q_list2
-    # else:
-    #     Q_list = Q_list3
-    QR_list.append(f"주제 : {subject[0]}")
-    QR_list.append(f"질문1. {Q_list1[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
-    QR_list.append(f"질문2. {Q_list1[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
-    QR_list.append(f"질문3. {Q_list1[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
-    QR_list.append(f"질문4. {Q_list1[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
-    QR_list.append(f"질문5. {Q_list1[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
-    QR_list.append(f"질문6. {Q_list1[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
-    QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
+        QR_list.append(f"주제 : {subject[0]}")
+        QR_list.append(f"질문1. {Q_list1[0]}" + " | " + f"답변 : {R_list[item_dict['Q1']-1]}")
+        QR_list.append(f"질문2. {Q_list1[1]}" + " | " + f"답변 : {R_list[item_dict['Q2']-1]}")
+        QR_list.append(f"질문3. {Q_list1[2]}" + " |"  + f"답변 : {R_list[item_dict['Q3']-1]}")
+        QR_list.append(f"질문4. {Q_list1[3]}" + " | " + f"답변 : {R_list[item_dict['Q4']-1]}")
+        QR_list.append(f"질문5. {Q_list1[4]}" + " | " + f"답변 : {R_list[item_dict['Q5']-1]}")
+        QR_list.append(f"질문6. {Q_list1[5]}" + " | " + f"답변 : {R_list[item_dict['Q6']-1]}")
+        QR_list.append(f"총 설문 시간 : {item_dict['elapsedTime']}초")
     
-    all_sentence = '\n'.join(QR_list)
-    print(all_sentence)
-    
-    user = {
-        f"Answer": send_survey_results(all_sentence)
-        # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
-        }        
-    return user
-#####################################################################
+        all_sentence = '\n'.join(QR_list)
+        print(all_sentence)
+        
+        ai_answer = {
+            f"Answer": send_survey_results(all_sentence, 1)
+            # f"Q{ item_dict['id'] }의 답변 넛지": send_survey_results(all_sentence)
+            }        
+        return ai_answer
 
 if __name__ == "__main__":
     import uvicorn

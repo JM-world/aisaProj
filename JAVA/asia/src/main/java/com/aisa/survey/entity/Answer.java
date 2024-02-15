@@ -2,6 +2,7 @@ package com.aisa.survey.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Answer {
+	// 변수 선언 시 테이블의 열로 추가가 되므로, 테이블의 열로 인식하고 싶지 않다면 @Transient 애너테이션을 사용하면 됩니다.
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,4 +68,6 @@ public class Answer {
 	
 	private Integer a21;
 	
+	@Column(columnDefinition = "TEXT")
+	private String resultMessage;
 }

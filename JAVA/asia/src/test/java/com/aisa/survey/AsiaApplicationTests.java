@@ -1,5 +1,7 @@
 package com.aisa.survey;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
@@ -19,18 +21,17 @@ public class AsiaApplicationTests {
 	
 	@Test
 	void test() {
-		Answer a1 = new Answer();
-		a1.setGender(1);
-		a1.setAge(30);
-		a1.setCreateDate(LocalDateTime.now());
-		a1.setA14(4);
-		a1.setA15(3);
-		a1.setA16(2);
-		a1.setA17(1);
-		a1.setA18(2);
-		a1.setA19(3);
-		a1.setA20(4);
-		this.answerRepository.save(a1);
+		Instant stime = Instant.now();
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Instant etime = Instant.now();
+		System.out.println("소요시간:"+Duration.between(stime, etime).toMillis()+"ms");
+		Long i = Duration.between(stime, etime).toMillis() / 1000;
+		Integer l = i.intValue();
+		
 	}
 
 }

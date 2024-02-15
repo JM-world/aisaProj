@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-py"
+  recursive_type_depth = "5"
+  interface            = "asyncio"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  Q1            Int?
+  Q2            Int?
+  Q3            Int?
+  Q4            Int?
+  Q5            Int?
+  Q6            Int?
+  Q7            Int?
+  Q8            Int?
+  Q9            Int?
+  Q10           Int?
+  Q11           Int?
+  Q12           Int?
+  Q13           Int?
+  Q14           Int?
+  Q15           Int?
+  Q16           Int?
+  Q17           Int?
+  Q18           Int?
+  Q19           Int?
+  Q20           Int?
+  Q21           Int?
+  elapsedTime   Int
+}

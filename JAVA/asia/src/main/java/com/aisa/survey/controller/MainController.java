@@ -2,6 +2,8 @@ package com.aisa.survey.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,10 @@ public class MainController {
 	
 	private final AnswerService answerService;
 	
+	// 설문 시간 측
+	private static Instant stime;
+	private static Instant etime;
+	
 	// 첫번째 [시작화면]
 	@GetMapping("/")
 	public String main(HttpSession session) {
@@ -69,6 +75,9 @@ public class MainController {
 	// 세번째 [설문화면]
 	@GetMapping("/survey/{page}")
 	public String getQuestionSetById(@PathVariable("page") int page, Model model) {
+		// 시작 시간 체크
+		stime = Instant.now();
+		
 	    List<Question> questionList = new ArrayList<>();
 	    if (page == 1) {
 	    	questionList = this.questionRepository.findByQuestionIdBetween(1, 6);
@@ -95,6 +104,11 @@ public class MainController {
 	public String surveyPost(@PathVariable("page") int page, @RequestParam Map<String, String> answers,
 						  HttpSession session, Model model) throws URISyntaxException, ParseException {
 		
+		// 제출 시간을 측정하고 시간 차이 값 구하기
+		etime = Instant.now();
+		int elapsedTime= (int) (Duration.between(stime, etime).toMillis() / 1000);
+		System.out.println("소요시간:"+elapsedTime+"ms");
+		
 		int i = 0;
         int j = 0;
         
@@ -109,11 +123,11 @@ public class MainController {
         } else {
         	i = 16;
         	j = 21;
-        	this.answerService.update3(this.sessionId, answers);
+        	// 아래에서 update3를 사용합니다. (결과 메세지를 넣기 위해)
         }
         
         // parameter setting
-        String apiUrl = "http://192.168.0.24:8000/create/answer";
+        String apiUrl = "http://192.168.0.50:8000/create/answer";
         URI uri = new URI(apiUrl);
         
         HashMap<String, Integer> body = new HashMap<>();
@@ -124,7 +138,7 @@ public class MainController {
     		body.put("Q" + k, Integer.parseInt(answerString));
     	}
 	        
-		body.put("elapsedTime", 20);
+		body.put("elapsedTime", elapsedTime);
 		
 		
 		
@@ -139,8 +153,12 @@ public class MainController {
 	    model.addAttribute("obj", obj.get("Answer").toString());
 	    System.out.println(obj.get("Answer").toString());
 	    this.obj = obj.get("Answer").toString();
+	    
+	    
+	    
 		
 	    if (page == 4) {
+	    	this.answerService.update3(this.sessionId, answers, this.obj);
 	    	return "redirect:/result";
 	    } else {
 	    	return "redirect:/survey/{page}";

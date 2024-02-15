@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.aisa.survey.entity.Answer;
@@ -45,29 +46,30 @@ public class AnswerService {
 	    Optional<Answer> optionalAnswer = answerRepository.findById(sessionId);
 	    if ( optionalAnswer.isPresent()) {
 	    	Answer answer = optionalAnswer.get();
-	    	answer.setA1(Integer.parseInt(answers.get("answers[" + 7 + "]")));
-	    	answer.setA2(Integer.parseInt(answers.get("answers[" + 8 + "]")));
-	    	answer.setA3(Integer.parseInt(answers.get("answers[" + 9 + "]")));
-	    	answer.setA4(Integer.parseInt(answers.get("answers[" + 10 + "]")));
-	    	answer.setA5(Integer.parseInt(answers.get("answers[" + 11 + "]")));
-	    	answer.setA6(Integer.parseInt(answers.get("answers[" + 12 + "]")));
-	    	answer.setA6(Integer.parseInt(answers.get("answers[" + 13 + "]")));
-	    	answer.setA6(Integer.parseInt(answers.get("answers[" + 14 + "]")));
-	    	answer.setA6(Integer.parseInt(answers.get("answers[" + 15 + "]")));
+	    	answer.setA7(Integer.parseInt(answers.get("answers[" + 7 + "]")));
+	    	answer.setA8(Integer.parseInt(answers.get("answers[" + 8 + "]")));
+	    	answer.setA9(Integer.parseInt(answers.get("answers[" + 9 + "]")));
+	    	answer.setA10(Integer.parseInt(answers.get("answers[" + 10 + "]")));
+	    	answer.setA11(Integer.parseInt(answers.get("answers[" + 11 + "]")));
+	    	answer.setA12(Integer.parseInt(answers.get("answers[" + 12 + "]")));
+	    	answer.setA13(Integer.parseInt(answers.get("answers[" + 13 + "]")));
+	    	answer.setA14(Integer.parseInt(answers.get("answers[" + 14 + "]")));
+	    	answer.setA15(Integer.parseInt(answers.get("answers[" + 15 + "]")));
 	    	this.answerRepository.save(answer);
 	    }
 	}
 	
-	public void update3(int sessionId, Map<String, String> answers) {
+	public void update3(int sessionId, Map<String, String> answers, String obj) {
 	    Optional<Answer> optionalAnswer = answerRepository.findById(sessionId);
 	    if ( optionalAnswer.isPresent()) {
 	    	Answer answer = optionalAnswer.get();
-	    	answer.setA1(Integer.parseInt(answers.get("answers[" + 16 + "]")));
-	    	answer.setA2(Integer.parseInt(answers.get("answers[" + 17 + "]")));
-	    	answer.setA3(Integer.parseInt(answers.get("answers[" + 18 + "]")));
-	    	answer.setA4(Integer.parseInt(answers.get("answers[" + 19 + "]")));
-	    	answer.setA5(Integer.parseInt(answers.get("answers[" + 20 + "]")));
-	    	answer.setA6(Integer.parseInt(answers.get("answers[" + 21 + "]")));
+	    	answer.setA16(Integer.parseInt(answers.get("answers[" + 16 + "]")));
+	    	answer.setA17(Integer.parseInt(answers.get("answers[" + 17 + "]")));
+	    	answer.setA18(Integer.parseInt(answers.get("answers[" + 18 + "]")));
+	    	answer.setA19(Integer.parseInt(answers.get("answers[" + 19 + "]")));
+	    	answer.setA20(Integer.parseInt(answers.get("answers[" + 20 + "]")));
+	    	answer.setA21(Integer.parseInt(answers.get("answers[" + 21 + "]")));
+	    	answer.setResultMessage(obj);
 	    	this.answerRepository.save(answer);
 	    }
 	}
