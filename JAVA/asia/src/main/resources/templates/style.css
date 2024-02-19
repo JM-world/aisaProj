@@ -97,15 +97,7 @@
   box-shadow: inset 0 5px 20px gold;
 }
 
-.admin-login {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 30px;
-            line-height: 2;
-            text-decoration: underline;
-            cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것으로 나타냅니다. */
-        }
+
 
 
 
@@ -178,7 +170,6 @@ body{
 
 }
 
-#loadingbar
 #back{    
 	position: fixed;    
     z-index: 5;    

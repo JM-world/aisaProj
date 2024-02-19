@@ -1,11 +1,6 @@
 package com.aisa.survey.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +18,5 @@ public class Admin {
 	
 	private String password;
 	
-	
-	// 어드민 계정 생성 시 필요 코드 
-	@Transient
-	private static String KEYCODE = "2YX7WzZ";
 
 }

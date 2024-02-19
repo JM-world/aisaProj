@@ -9,8 +9,8 @@ from prisma.models import User
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # DeepL API key(무료 버전, 월 50만 토큰까지 무료 번역) 
 import deepl
-deepl_key = "3d58744a-d5cd-fd8c-e078-015c393b54f4:fx"   # 무료 버젼
-translator = deepl.Translator(deepl_key)                # Deeple 객체 생성
+deepl_key = os.getenv("DEEPL_API_KEY")   # 유료 버젼
+translator = deepl.Translator(deepl_key)                # Deepl 객체 생성
 
 # 초기값
 elapsedTime = 0   # 총 답변 시간

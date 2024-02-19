@@ -7,45 +7,29 @@
 	<title>설문조사시작</title>
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<style>
-		.btn-light {
-			font-size: 20px;
-			padding: 12px 20px; /* 더 큰 크기로 조정 */
-		}
-		.btn-info {
-			background-color: lightblue; /* 선택시의 배경색 */
-			border-color:black; /* 선택시의 테두리색 */
-		}
-		
-		.user_info,
-        .user_age,
-        .buttons {
-            text-align: center;
-        }
-	</style>
 </head>
 <body>
 	<section class="main">
         <div class="profile-card">
 			<form id="startForm" th:action="@{/select}" th:object="${requestDto}" method="post">
-            <div class="user_info">
-                <h2 style="font-size: 38px; font-weight: 600; padding-top: 100px;">성별을 선택해주세요</h2>
-                <div class="button-group" style="margin-top: 30px;">
+            <div class="user_info" style="text-align: center;">
+                <h2 style="font-size: 50px; font-weight: 200; padding-top: 100px;">성별을 선택해주세요</h2>
+                <div class="button-group" style="margin-top: 10px;">
                     <button id="maleButton" type="button" class="btn btn-light" onclick="toggleButton('maleButton')">남자</button>
                     <button id="femaleButton" type="button" class="btn btn-light" onclick="toggleButton('femaleButton')">여자</button>
                     <input type="hidden" id="hidden_gender" th:field="*{gender}" value="">
                 </div>
             </div>
-            <div class="user_age" style="margin-top: 50px;">
-                <h2 style="font-size: 38px; font-weight: 600;">나이를 입력해주세요</h2>
-                <div class="input-group input-group-lg" style="width: 200px; margin: 0 auto; margin-top: 20px;">
-                    <input type="text" id="ageInput" class="form-control" placeholder="Userage" aria-label="나이"
-                           aria-describedby="inputGroup-sizing-lg" th:field="*{age}">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">세</span>
-                </div>
+            <div class="user_age" style="margin-top: 50px;  text-align: center;">
+                <h2 style="font-size: 50px; font-weight: 200;">나이를 입력해주세요</h2>
+                 <div class="input-group" style="width: 200px; margin: 0 auto; margin-top: 20px;">
+				    <input type="text" id="ageInput" class="form-control" placeholder="나이 (세)" aria-label="나이"
+				           aria-describedby="inputGroup-sizing-lg" th:field="*{age}" style="font-size: 30px; box-sizing: border-box;">
+				</div>
             </div>
-            <div class="buttons" style="margin-top: 70px;">
-                <button type="button" class="btn" onclick="checkInputs()">설문 시작</button>
+            
+            <div class="buttons" style="margin-top: 50px;">
+   				 <button type="button" class="btn-custom" onclick="checkInputs()">설문시작</button>
             </div>
 		</form>
 	    </div>
