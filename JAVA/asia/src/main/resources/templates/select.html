@@ -5,8 +5,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>설문조사시작</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+		.btn-light {
+			font-size: 20px;
+			padding: 12px 20px; /* 더 큰 크기로 조정 */
+		}
+		.btn-info {
+			background-color: lightblue; /* 선택시의 배경색 */
+			border-color:black; /* 선택시의 테두리색 */
+		}
+
+		.user_info,
+        .user_age,
+        .buttons {
+            text-align: center;
+        }
+</style>
 </head>
 <body>
 	<section class="main">
@@ -33,6 +49,10 @@
             </div>
 		</form>
 	    </div>
+	    
+	<div class="cursor">
+   	 <img src="img/chmo.png">
+	</div>
 	</section>
 	
 	  <!-- Bootstrap 스크립트 추가 -->
@@ -41,7 +61,17 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
 	<script>
-	 var selectedButtonId = null;
+	//마우스 효과
+	document.addEventListener('mousemove', (e) => {
+    let mouseX = e.pageX + 10; // document의 x좌표값
+    let mouseY = e.pageY + 10; // document의 y좌표값
+
+    let cursor = document.querySelector('.cursor');
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+})
+		
+	var selectedButtonId = null;
 
 	function toggleButton(clickedButtonId) {
 	    // 선택된 버튼에 토글 클래스 적용

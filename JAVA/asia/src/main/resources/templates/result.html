@@ -4,8 +4,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>설문 제출 완료!</title>
-	<link rel="stylesheet" href="style.css">
+	<title>설문 제출 완료</title>
+	<link rel="stylesheet" href="/css/style.css">
+   <style>
+    /* 결과 자동 줄바꿈! */
+    .wrap-text {
+        white-space: pre-wrap;
+    }
+    </style>
 </head>
 
 <body>
@@ -14,13 +20,30 @@
 	    <div class="data">
 	      <h2 style="font-size: 38px; font-weight: 600; line-height: 2; padding-top: 80px;">제출 완료!</h2>
 	      <br><br>
-	      <p style="font-size: 13px; line-height: 2;">[[${obj}]]</p>
+<!--	      <p style="font-size: 20px; line-height: 2;"  class="wrap-text">[[${obj}]]</p>-->
 	      
 	    </div> <br><br><br>
 	    <div class="buttons" style="display: flex; align-items: center;">
 	      <a href="/" class="btn">처음으로</a>
 	    </div>
 	  </div>
+	   <div class="cursor">
+   		 <img src="img/chmo.png">
+	</div>
+       
 	</section>
+	
+		<script>
+		//마우스 효과
+	document.addEventListener('mousemove', (e) => {
+    let mouseX = e.pageX + 3; // document의 x좌표값
+    let mouseY = e.pageY + 3; // document의 y좌표값
+
+    let cursor = document.querySelector('.cursor');
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+})
+		
+	</script>
 </body>
 </html>

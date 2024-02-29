@@ -4,11 +4,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
+import com.aisa.survey.entity.AdminPage;
+import com.aisa.survey.repository.AdminPageRepository;
+import com.aisa.survey.repository.AdminRepository;
+import com.aisa.survey.service.AdminPageService;
+import com.aisa.survey.service.AdminService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -41,6 +45,14 @@ public class MainController {
 	private final QuestionRepository questionRepository;
 	
 	private final AnswerService answerService;
+
+	private final AdminPageService adminPageService;
+	private final AdminPageRepository adminpageRepository;
+
+	String obj = "";
+
+	// 오늘 날짜
+	private static String TODAY = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 	
 	// 설문 시간 측
 	private static Instant stime;
@@ -48,7 +60,18 @@ public class MainController {
 	
 	// 첫번째 [시작화면]
 	@GetMapping("/")
-	public String main(HttpSession session) {
+	public String mainPage(HttpSession session) {
+		this.obj = "";
+		// 방문자 수 카운트 -> 어드민 페이지에서 사용
+		Optional<AdminPage> adminPage = this.adminpageRepository.findByDate(this.TODAY);
+		if (adminPage.isPresent()) {
+			AdminPage adminPage1 = adminPage.get();
+			adminPage1.setVisitCount(adminPage1.getVisitCount() + 1);
+			this.adminpageRepository.save(adminPage1);
+		} else {
+			this.adminPageService.create(this.TODAY);
+		}
+
 		session.invalidate();
 		return "main";
 	}
@@ -91,14 +114,18 @@ public class MainController {
 	    page += 1;
 	    model.addAttribute("page", page);
 	    model.addAttribute("questionList", questionList);
-	    if (page == 4) {
-	    	page = 2;
-	    }
-	    // survey.html은 질문 세트를 표시하는 템플릿 파일입니다.
+//	    if (page == 4) {
+//	    	page = 2;
+//	    }
+
+		// 각 페이지가 로딩될 때마다 로딩 바를 보이게 합니다.
+		model.addAttribute("showLoadingBar", true);
+		model.addAttribute("nudge", this.obj);
+		// survey.html은 질문 세트를 표시하는 템플릿 파일입니다.
 	    return "survey";
 	}
 	
-	String obj = "";
+
 	// 세번째 [제출 시]
 	@PostMapping("/survey/{page}")
 	public String surveyPost(@PathVariable("page") int page, @RequestParam Map<String, String> answers,
@@ -149,8 +176,8 @@ public class MainController {
         RestTemplate rest = new RestTemplate();
         ResponseEntity<String> response = rest.exchange(uri, HttpMethod.POST, entity, String.class);
 	    JSONParser json = new JSONParser();
-	    JSONObject obj = (JSONObject) json.parse(response.getBody().toString());
-	    model.addAttribute("obj", obj.get("Answer").toString());
+	    JSONObject obj = (JSONObject) json.parse(response.getBody());
+//	    model.addAttribute("obj", obj.get("Answer").toString());
 	    System.out.println(obj.get("Answer").toString());
 	    this.obj = obj.get("Answer").toString();
 	    
@@ -159,6 +186,17 @@ public class MainController {
 		
 	    if (page == 4) {
 	    	this.answerService.update3(this.sessionId, answers, this.obj);
+
+			// 제출 수 카운트 -> 어드민 페이지에서 사용
+			Optional<AdminPage> adminPageSubmit = this.adminpageRepository.findByDate(this.TODAY);
+			if (adminPageSubmit.isPresent()) {
+				AdminPage adminPage1 = adminPageSubmit.get();
+				adminPage1.setSubmitCount(adminPage1.getSubmitCount() + 1);
+				this.adminpageRepository.save(adminPage1);
+			} else { // else 구문은 서버 환경에서는 필요 없음
+				this.adminPageService.create(this.TODAY);
+			}
+
 	    	return "redirect:/result";
 	    } else {
 	    	return "redirect:/survey/{page}";
@@ -168,7 +206,8 @@ public class MainController {
 	// 네번째 [결과화면]
 	@GetMapping("/result")
 	public String result(Model model) {
-		model.addAttribute("obj", this.obj);
+//		결과 화면에서 표출 안하기로 결정
+//		model.addAttribute("obj", this.obj);
 		return "result";
 	}
 	

@@ -5,56 +5,122 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>설문페이지</title>
-	<link rel="stylesheet" th:href="@{/style.css}" />
-  	<script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/loading.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var alertMessage = document.querySelector('.alert-warning');
+			if (alertMessage) {
+				// 마침표 기준으로 문자열을 분할하고, <br> 태그를 추가하여 다시 결합
+				alertMessage.innerHTML = alertMessage.textContent.split('. ').join('.<br>');
+			}
+		});
+	</script>
 </head>
 
 <body>
   <section class="main">
     <div class="profile-card">
-			<div th:action="@{|/survey/${page}|}" method="post">
+		<div th:if='${nudge != ""}'>
+			<div th:text="${nudge}" class="alert alert-warning" style="font-size: 1.3em; width: 480px; margin-bottom: 30px; margin-left: auto; margin-right: auto;" role="alert"></div>
+		</div>
+		<form id="surveyForm" th:action="@{|/survey/${page}|}" method="post" >
 		    <div class="questionList">
 	 			<!-- questionList를 순회하며 각 질문을 출력 -->
-                <th:block th:each="question : ${questionList}">
-					<h5 style="position: relative;">
-					    <img src="../img/gogumai.png" alt="" style="vertical-align: middle; width: 50px;">
-					    <span th:text="${question.questionId}" style="position: absolute; top: 12px; left: 17px;"></span>
-					    <span class="border-bottom" th:text="${question.question}" style="display: inline;"></span>
-					</h5>
-                     <div class="answer" style="margin-top:10px;">
+                <th:block th:each="question : ${questionList}"> 
+                 <h5 style="position: relative;">
+				    <img src="../img/gogumai.png" alt="" style="vertical-align: middle; width: 50px;">
+				    <span th:text="${question.questionId}" style="position: absolute; top: 12px; left: 17px;"></span>
+				    <span class="border-bottom" th:text="${question.question}" style="display: inline;"></span>
+				</h5>
+                     <div class="answer" style="margin-top:10px; margin-left: 30px;">
                          <!-- 답변 입력 폼 -->
-                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="1" class="r1"> 전혀 그렇지 않다 &nbsp;
-                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="2" class="r1"> 그렇지 않다 &nbsp;
-                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="3" class="r1"> 보통이다 &nbsp;
-                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="4" class="r1"> 그렇다 &nbsp;
-                         <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="5" class="r1"> 매우 그렇다 &nbsp;
-                     </div> <br>
-                     <br>
+                        <label>
+					        <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="1" class="r1">
+					        전혀 그렇지 않다
+					    </label> &nbsp;
+					    <label>
+					        <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="2" class="r1">
+					        그렇지 않다
+					    </label> &nbsp;
+					    <label>
+					        <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="3" class="r1">
+					        보통이다
+					    </label> &nbsp;
+					    <label>
+					        <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="4" class="r1">
+					        그렇다
+					    </label> &nbsp;
+					    <label>
+					        <input type="radio" th:name="'answers[' + ${question.questionId} + ']'" th:value="5" class="r1">
+					        매우 그렇다
+					    </label> &nbsp;
+					</div><br><br>
+                     
                 </th:block>
             </div>
             <br>
             <div class="buttons">
    				<button type="submit" id="submitBtn" class="survey-btn">다음</button>
 			</div>
+			<!-- 페이지 번호를 표시 -->
+			<div class="page-number" style="float: right; font-size: 20px;">Page: [[${page-1}]]/3</div>
 		</form>
      </div>
-     <div id="loadingBar">
-        <img src="/img/loading.gif">
-       </div>
-  </section>
+    
+<div class="cursor">
+    <img src="../img/chmo.png">
+</div>
 
-	      
- 
+     
+  </section>
+  
+<div id="loadingBar" th:if="${showLoadingBar}" style="display: none;">
+    <img src="/img/loading.gif"> 
+</div>
+  
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	    
-	$(document).ready(function() {
-	    $('#surveyForm').submit(function() {
-	        $('#loadingBar').show(); // 폼이 서브밋될 때 로딩 바를 표시합니다.
-	    });
-	});
+	
+		//마우스 효과
+	document.addEventListener('mousemove', (e) => {
+    let mouseX = e.pageX + 3; // document의 x좌표값
+    let mouseY = e.pageY + 3; // document의 y좌표값
+
+    let cursor = document.querySelector('.cursor');
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+})	
+	
+	
+	
+$(document).ready(function() {
+    // 로딩 바를 표시하는 함수
+    function showLoadingBar() {
+        $('#loadingBar').show();
+        $('.questionList, .buttons, .page-number').css('display', 'none'); // 로딩 바가 표시될 때 질문 섹션과 버튼을 숨깁니다.
+    }
+
+    // 로딩 바를 숨기는 함수
+    function hideLoadingBar() {
+        $('#loadingBar').hide();
+        $('.questionList, .buttons, .page-number').css('display', 'block'); // 로딩 바가 사라질 때 질문 섹션과 버튼을 다시 보이게 합니다.
+    }
+
+    // surveyForm이 서브밋될 때 실행되는 함수
+    $('#surveyForm').submit(function() {
+        showLoadingBar(); // 로딩 바를 표시합니다.
+    });
+
+  // 페이지 로드될 때 로딩 바를 숨깁니다.
+    hideLoadingBar();
+});
+
 
 </script>
+	      
+
 </body>
 </html>

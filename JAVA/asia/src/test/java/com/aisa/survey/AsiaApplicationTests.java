@@ -1,8 +1,7 @@
 package com.aisa.survey;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,15 @@ import com.aisa.survey.repository.AnswerRepository;
 
 @SpringBootTest
 public class AsiaApplicationTests {
+
+	@Test
+	void p() {
+		LocalDate date = LocalDate.now();
+		String startDate = date.with(DayOfWeek.MONDAY).minusWeeks(0).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+		String endDate = date.with(DayOfWeek.SUNDAY).minusWeeks(0).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+
+		System.out.println(startDate + " " + endDate);
+	}
 
 	@Autowired
 	private AnswerRepository answerRepository;

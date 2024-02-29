@@ -1,10 +1,16 @@
 package com.aisa.survey.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.json.simple.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.aisa.survey.entity.Answer;
@@ -72,6 +78,13 @@ public class AnswerService {
 	    	answer.setResultMessage(obj);
 	    	this.answerRepository.save(answer);
 	    }
+	}
+
+	public Page<Answer> answerList(int page, int num) {
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+		Pageable pageable = PageRequest.of(page, num, Sort.by(sorts));
+		return this.answerRepository.findAll(pageable);
 	}
 
 }

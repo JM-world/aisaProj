@@ -1,0 +1,266 @@
+<html layout:decorate="~{/admin/layout}">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Controller에서 넘어온 model 값을 읽을 수 있게 미리 id = chart를 불러온다.
+            // var chartDataElement1 = document.getElementById('chart1');
+            // var chartDataElement2 = document.getElementById('chart2');
+
+            // js파일 세팅
+            var script = document.createElement('script');
+            script.src = "/js/chart.js";
+            document.body.appendChild(script);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var button = document.querySelector('#exampleButton');
+            var tooltip = new bootstrap.Tooltip(button, {
+                title: function () {
+                    return '이 데이터는 <u>AI 기술</u>을 이용해<br>설문 응답자의 진실성을 평가하며,<br>불성실한 답변자를 걸러내고<br><b class="custom-tooltip-color">더욱 신뢰할 수 있는 결과를 비교</b>해 제공합니다.';
+                },
+                html: true
+            });
+
+            button.addEventListener('mouseenter', function () {
+                tooltip.show();
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var myCarousel = document.querySelector('#carouselExampleIndicators');
+            var carousel = new bootstrap.Carousel(myCarousel, {
+                interval: false  // 자동 슬라이드 기능 비활성화
+            });
+        });
+    </script>
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+
+            $(".btn-group .btn").click(function () {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $(".actionButton").click(function () {
+                let buttonValue = this.value;
+                let url = "/admin/main/" + buttonValue;
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (response) {
+                        $("#mainCard").replaceWith(response);
+                        chart1(buttonValue);
+                        chart2(buttonValue);
+                        chart3(buttonValue);
+                        chart4(buttonValue);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="p-4" style="margin-bottom: -20px;">
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group shadow-sm" role="group">
+                        <input type="button" value="Today" class="btn actionButton active">
+                        <input type="button" value="Week" class="btn actionButton">
+                        <input type="button" value="Month" class="btn actionButton">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="mainCard">
+            <div class="col-3 p-3">
+                <div class="card main-card-top-1">
+                    <div class="card-header">방문수</div>
+                    <div class="card-body">
+                        <div class="card main-card-top-2"
+                             style="width: 280px; height: 120px; margin-left: auto; margin-right: auto;">
+                            <canvas id="chart1" th:data-aaa-value='${visitStr}'></canvas>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <h2 id="visit" th:text="${visit}" class="h2"
+                            style="display: inline-block; margin-right: 5px;"></h2>
+                        <th:block th:if="${visit > visitBefore}">
+                            <p style="display: inline-block; margin: 0;
+                                color:red; vertical-align: top;">▲ [[${visit - visitBefore}]]</p>
+                        </th:block>
+                        <th:block th:if="${visit < visitBefore}">
+                            <p style="display: inline-block; margin: 0;
+                                color:blue; vertical-align: top;">▼ [[${visitBefore - visit}]]</p>
+                        </th:block>
+                        <th:block th:if="${visit == visitBefore}">
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 p-3">
+                <div class="card main-card-top-1">
+                    <div class="card-header">제출수</div>
+                    <div class="card-body">
+                        <div class="card main-card-top-2"
+                             style="width: 280px; height: 120px; margin-left: auto; margin-right: auto;">
+                            <canvas id="chart2" th:data-aaa-value='${submitStr}'></canvas>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <h2 class="h2" style="display: inline-block; margin-right: 5px;">[[${submit}]]</h2>
+                        <th:block th:if="${submit > submitBefore}">
+                            <p style="display: inline-block; margin: 0;
+                                color:red; vertical-align: top;">▲ [[${submit - submitBefore}]]</p>
+                        </th:block>
+                        <th:block th:if="${submit < submitBefore}">
+                            <p style="display: inline-block; margin: 0;
+                                color:blue; vertical-align: top;">▼ [[${submitBefore - submit}]]</p>
+                        </th:block>
+                        <th:block th:if="${submit == submitBefore}">
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 p-3">
+                <div class="card main-card-top-1">
+                    <div class="card-header">성별 비율</div>
+                    <div class="card-body rounded-bottom">
+                        <div class="card main-card-top-2 p-2"
+                             style="width: 280px; height: 182px; margin-left: auto; margin-right: auto;">
+                            <canvas id="chart3" th:data-aaa-value='${submitStr}'></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 p-3">
+                <div class="card main-card-top-1">
+                    <div class="card-header">연령 비율</div>
+                    <div class="card-body rounded-bottom">
+                        <div class="card main-card-top-2 p-2"
+                             style="width: 280px; height: 182px; margin-left: auto; margin-right: auto;">
+                            <canvas id="chart4" th:data-aaa-value='${submitStr}'></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5 p-3">
+                <div class="card main-card-bottom-1">
+                    <div class="card-header" style="display: inline-block">
+                        <span>제출 내역</span>
+                        <span style="color: #aaaaaa; margin-left: 10px; font-size: 14px;">최근 5개</span>
+                    </div>
+                    <div class="card-body main-card-bottom-2" style="margin-left: auto; margin-right: auto;">
+                        <div class="card main-card-bottom-3 p-1 ">
+                            <div class="d-flex flex-row" style="font-weight: 500;">
+                                <span class="col-2">성별</span>
+                                <span class="col-2">나이</span>
+                                <span class="col-4">일자</span>
+                                <span class="col-4">상태</span>
+                            </div>
+                        </div>
+
+
+                        <div th:each="answer, loop : ${answerList}" class="card main-card-bottom-4 p-1 mt-2">
+                            <div class="d-flex flex-row my-1">
+                                <span class="col-2" th:if="${answer.gender == 1}">남성</span>
+                                <span class="col-2" th:if="${answer.gender == 2}">여성</span>
+                                <span class="col-2" th:text="${answer.age}"></span>
+                                <span class="col-4"
+                                      th:text="${#temporals.format(answer.createDate, 'yy.MM.dd')}"></span>
+                                <span class="col-4" th:if="${answer.resultMessage == null}"
+                                      style="color: red; font-weight: 400;">미제출</span>
+                                <a class="col-4" th:href="@{|/admin/detail/${answer.id}|}"
+                                   th:if="${answer.resultMessage != null}"
+                                   style="color: #5f9842; font-weight: 500;">제출완료</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-7 p-3">
+                <div class="card main-card-bottom-1">
+                    <div class="card-header" style="text-align: center; display: inline-block">
+                        <span style="vertical-align: middle;">AI 불성실 응답자 제거 후 비교 데이터 &nbsp</span>
+                        <span class="badge rounded-pill bg-light text-dark"
+                              style="padding: 0.25em 0.4em; vertical-align: middle;"
+                              id="exampleButton" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <i class="fa-solid fa-question"></i>
+                        </span>
+                    </div>
+
+                    <div class="card-body main-card-bottom-2">
+                        <div id="carouselExampleIndicators" class="carousel slide" style="height: 300px;">
+                            <div class="carousel-indicators" style="bottom: -20px;">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" style="height: 280px; width: 700px; margin-left: 35px;
+                                    justify-content: center; align-items: center;">
+                                    <div class="row">
+                                        <div class="col-7" style="height: 280px;">
+                                            <canvas id="chart5" th:data-aaa-value='${visitStr}'></canvas>
+                                        </div>
+                                        <div class="col-5">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class=" col-1"></div>
+                                        <div class="card carousel-card col-5"
+                                             style=" background-color:#424b54; left: -10px; height: 280px;">
+                                            <canvas id="chart6" th:data-aaa-value='${visitStr}'></canvas>
+                                        </div>
+                                        <div class="card carousel-card col-5"
+                                             style="background-color: #424b54; right: -10px; ">aaa
+                                        </div>
+                                        <div class="col-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" style="left: -45px;" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" style="right: -45px;" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+
+
+</html>
