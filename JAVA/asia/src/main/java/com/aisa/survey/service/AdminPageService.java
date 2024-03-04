@@ -31,35 +31,42 @@ public class AdminPageService  {
 
 
     public List<Integer> sumOfVisitAndSubmit(String period) {
-        LocalDate localDate = LocalDate.now();
+        LocalDate date = LocalDate.now();
         String endDate = "";
         String endDate2 = "";
         String startDate = "";
         String startDate2 = "";
         if (period.equals("Today") || period.equals("main")) {
             // 오늘 (규칙성을 위해 변수명 통일)
-            endDate = localDate.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            endDate = date.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 
             // 어제
-            startDate = localDate.minusDays(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            startDate = date.minusDays(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 
         } else if (period.equals("Week")) {
-            // 이번 주 (오늘로부터 1주 전)
-            endDate = localDate.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-            startDate = localDate.minusWeeks(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-
-            // 저번 주 (1주 전으로부터 2주 전)
-            endDate2 = localDate.minusWeeks(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-            startDate2 = localDate.minusWeeks(2).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            // 이번 주 (월요일부터 오늘까지)
+            endDate = date.with(DayOfWeek.SUNDAY).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            startDate = date.with(DayOfWeek.MONDAY).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            // 오늘 날짜가 일요일이 아니라면
+            if ( !date.format(DateTimeFormatter.ofPattern("yy.MM.dd")).equals(endDate) ) {
+                endDate = date.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            }
+            // 저번 주 (월~일)
+            endDate2 = date.with(DayOfWeek.SUNDAY).minusWeeks(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            startDate2 = date.with(DayOfWeek.MONDAY).minusWeeks(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 
         } else {
-            // 이번 달 (오늘로부터 1달 전)
-            endDate = localDate.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-            startDate = localDate.minusMonths(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            // 이번 달 (1일부터 현재까지)
+            endDate = date.with(TemporalAdjusters.lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            startDate = date.withDayOfMonth(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 
-            // 저번 달 (1달 전으로부터 2달 전)
-            endDate2 = localDate.minusMonths(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
-            startDate2 = localDate.minusMonths(2).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            if ( !date.format(DateTimeFormatter.ofPattern("yy.MM.dd")).equals(endDate) ) {
+                endDate = date.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            }
+
+            // 저번 달
+            endDate2 = date.with(TemporalAdjusters.lastDayOfMonth()).minusMonths(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+            startDate2 = date.withDayOfMonth(1).minusMonths(1).format(DateTimeFormatter.ofPattern("yy.MM.dd"));
         }
 
 

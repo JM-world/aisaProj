@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -86,9 +87,6 @@ public class AdminController {
         List<Integer> visitList = this.adminPageService.visitList(buttonValue);
         List<Integer> submitList = this.adminPageService.submitList(buttonValue);
 
-        Page<Answer> answerList = this.answerService.answerList(0, 5);
-
-
         Gson gson = new Gson();
         String visitStr = gson.toJson(visitList);
 		String submitStr = gson.toJson(submitList);
@@ -104,9 +102,25 @@ public class AdminController {
 		model.addAttribute("submitStr", submitStr);
 
         // 제출 현황
-        model.addAttribute("answerList", answerList);
+        model.addAttribute("answerList", this.answerService.answerList(0, 5));
 
-        System.out.println(visitStr);
+        // 성별 분포
+        model.addAttribute("genderRatio", this.answerService.genderRatio());
+
+        // 연령 분포
+        model.addAttribute("age", this.answerService.age());
+
+        // ai 차트 데이터
+            // 일반 설문
+        model.addAttribute("avgBefore", this.answerService.aiSurveyResultBefore());
+            // 성실 데이터
+        model.addAttribute("avgAfter", this.answerService.aiSurveyResultAfter());
+
+        // 연령별 비교
+        model.addAttribute("ageAvg", this.answerService.ageAvg());
+
+
+
 
 
         if (!buttonValue.equals("main")) {
@@ -115,6 +129,11 @@ public class AdminController {
         }
 
         return "/admin/admin_main";
+    }
+
+    @GetMapping("/list")
+    public String list() {
+        return "/admin/admin_list";
     }
 
     @GetMapping("/aaa")

@@ -1,6 +1,61 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+body {
+    background-color: #343a40;
+}
+
+.row-2 {
+    height: 17%;
+}
+
+.row-3 {
+    height: 80%;
+}
+
+
+@media (max-width: 1440px) {
+    .main-card-top-1 {
+        min-height: 200px; /* 화면이 작을 때 높이 조정 */
+    }
+}
+
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 768px) {
+    .main-card-top-2, .main-card-bottom-3, .main-card-bottom-4 {
+        width: 100%;
+    }
+
+    .btn-group .btn {
+        width: auto;
+        padding: 10px;
+    }
+
+    .carousel-item, .carousel-card {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .chart-container-top {
+        height: auto;
+    }
+
+    .main-card-top-1 {
+        min-height: 200px; /* 태블릿과 모바일에서는 높이를 줄임 */
+    }
+}
+
+
 /*///////////////////////////////////////////////////*/
 /*/////////////login_form, signup_form///////////////*/
 /*///////////////////////////////////////////////////*/
+
+
 
 /*로그인, 회원가입 input*/
 .form-control-custom {
@@ -80,7 +135,6 @@
     border-radius: 15px;
     font-weight: 700;
     background-color: white;
-    width: 104px;
     font-size: large;
     border: none;
     color: #343a40;
@@ -90,18 +144,27 @@
 .main-card-top-1 {
     border: 3px solid rgb(255, 141, 110);
     border-radius: 25px;
-
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .main-card-top-1 .card-header {
-    border: none;
+    border:none;
+    border-radius: 30px 30px 0 0;
+    height: 15%;
     background-color: white;
-    border-radius: 25px;
     font-weight: 700;
+}
+
+.main-card-top-1 .card-body {
+    height: 60%;
 }
 
 .main-card-top-1 .card-footer{
     border: none;
+    height: 20%;
     background-color: white;
     border-radius: 25px;
     color: #343a40;
@@ -109,6 +172,7 @@
 
 .main-card-top-2 {
     border: none;
+    height: 40px;
 }
 
 
@@ -128,6 +192,7 @@
 }
 
 .main-card-bottom-2 {
+    width: 100%;
     border-radius: 25px;
     background-color: #343a40;
     border: none;
@@ -135,7 +200,7 @@
 }
 
 .main-card-bottom-3 {
-    width: 500px;
+    width: 100%;
     border: none;
     background-color: #343a40;
     color: white;
@@ -191,6 +256,11 @@ h2 .h2 {
     border: none;
     /*border-width: 2px;*/
     background-color: rgb(255, 202, 189);
+}
+
+.chart-container-top {
+    height: auto; /* 또는 특정 높이, 예: 220px; */
+    aspect-ratio: 12 / 5; /* 차트 비율 조정, 필요에 따라 수정 */
 }
 
 
