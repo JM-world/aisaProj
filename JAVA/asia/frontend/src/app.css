@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+.poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+.nanum {
+    font-family: 'Nanum Gothic Coding:400';
+}
+
+.sunflower {
+    font-family: 'Sunflower';
+}
+
+.fontSignature {
+    color: rgb(255, 141, 110);
+}

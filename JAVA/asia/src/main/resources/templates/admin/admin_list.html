@@ -1,16 +1,92 @@
 <html layout:decorate="~{/admin/layout}">
+<head>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 드롭다운 항목 선택 시 버튼 텍스트 변경
+            document.querySelectorAll('.dropdown-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var dropdownId = this.closest('.dropdown').querySelector('.dropdown-toggle').id;
+                    var buttonText = this.textContent.trim();
+                    document.getElementById(dropdownId).textContent = buttonText;
+                });
+            });
+
+            // "확인" 버튼 클릭 시 입력한 날짜로 버튼 텍스트 변경
+            document.querySelectorAll('.dropdown-menu input[type="button"]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var input = this.closest('.dropdown-menu').querySelector('input[type="text"]');
+                    var buttonText = input.value.trim();
+                    var dropdownId = this.closest('.dropdown').querySelector('.dropdown-toggle').id;
+                    if (buttonText !== "") {
+                        document.getElementById(dropdownId).textContent = buttonText;
+
+                    } else {
+                        if (dropdownId === "genderDropdown3") {
+                            document.getElementById(dropdownId).textContent = "시작 날짜";
+                        } else {
+                            document.getElementById(dropdownId).textContent = "종료 날짜";
+                        }
+                    }
+
+                    var dropdownMenu = this.closest('.dropdown-menu');
+                    bootstrap.Dropdown.getInstance(dropdownMenu.previousElementSibling).hide();
+                });
+            });
+
+            // 리셋 버튼 클릭 이벤트 핸들러 추가
+            document.querySelector('.fa-rotate-right').closest('button').addEventListener('click', function () {
+                // 각 드롭다운 버튼의 기본 텍스트 설정
+                var defaultTexts = ["성별", "연령", "시작 날짜", "종료 날짜", "구분"];
+                document.querySelectorAll('.dropdown-toggle').forEach(function (button, index) {
+                    button.textContent = defaultTexts[index];
+                });
+
+                // "시작 날짜"와 "종료 날짜" 입력 필드 초기화
+                document.querySelectorAll('.dropdown-menu input[type="text"]').forEach(function (input) {
+                    input.value = "";
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $('.fa-magnifying-glass').closest('button').click(function () {
+                var gender = $('#genderDropdown1').text().trim();
+                var age = $('#genderDropdown2').text().trim();
+                var startDate = $('#genderDropdown3').text().trim();
+                var endDate = $('#genderDropdown4').text().trim();
+                var category = $('#genderDropdown5').text().trim();
+                var search = "1";
+
+                // AJAX 요청 전송
+                $.get('/admin/list', {
+                    gender: gender,
+                    age: age,
+                    startDate: startDate,
+                    endDate: endDate,
+                    category: category,
+                    search: search
+                }, function (data) {
+                    console.log('Response:', data);
+                    $(".list-item").replaceWith(data);
+                    // 서버 응답 처리
+                }).fail(function (xhr, status, error) {
+                    console.error('Error:', status, error);
+                });
+            });
+        });
+    </script>
+</head>
 <body>
 <div layout:fragment="content">
     <div class="row" style="margin-top: 3%;">
         <div class="col-2"></div>
         <div class="col-8">
             <div class="card card-body"
-                 style="background-color: white; border-radius: 20px 20px 20px 20px;
-                            border: solid 3px rgb(255, 141, 110);">
+                 style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); background-color: rgb(255,213,207); border: none; border-radius: 20px 20px 20px 20px;">
                 <div class="row" style="height: 100%;">
                     <div class="col-1" style="height: 100%;">
                         <button class="btn" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
-                            border: solid 2px rgb(255, 141, 110);">
+                            border: solid 2px rgb(255, 141, 110); width: 80px;">
                             <a th:href="@{/admin/main/main}" style="color: white;"><i class="fa-solid fa-chevron-left">&nbsp;메인</i>
                             </a>
                         </button>
@@ -23,10 +99,12 @@
                                 성별
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="genderDropdown1">
-                                <li><a class="dropdown-item" href="#">&nbsp;성별&nbsp;&nbsp;</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;남자&nbsp;&nbsp;</a></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;여자&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">성별</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">남자</a></li>
+                                <li><a class="dropdown-item" href="#">여자</a></li>
                             </ul>
                         </div>
                     </div>
@@ -38,54 +116,154 @@
                                 연령
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="genderDropdown2">
-                                <li><a class="dropdown-item" href="#">&nbsp;연령&nbsp;&nbsp;</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;중학생&nbsp;&nbsp;</a></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;고등학생&nbsp;&nbsp;</a></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;기타&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">연령</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">중학생</a></li>
+                                <li><a class="dropdown-item" href="#">고등학생</a></li>
+                                <li><a class="dropdown-item" href="#">기타</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-4" style="background-color: #ffd78e">
+                    <div class="col-3 d-flex justify-content-center"
+                         style="display: flex; align-items: center; gap: 10px;">
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" id="genderDropdown3" type="button"
                                     data-bs-toggle="dropdown"
                                     style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
                                 시작 날짜
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="genderDropdown3" style="width: 50%;">
-                                <li class="card-body" style="width: 50%;">
-                                    <input type="text" style="width: 50%;">
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown3">
+                                <li class="d-flex justify-content-center p-3">
+                                    <input type="text" placeholder="ex) 23.09.01"
+                                           style="width: 100%; border-radius: 10px 10px 10px 10px; border: solid 2px rgb(255, 141, 110);">
+                                </li>
+                                <li class="d-flex justify-content-center p-3">
+                                    <input type="button" value="확인"
+                                           style="width: 50%; border-radius: 10px 10px 10px 10px; border: solid 2px rgb(255, 141, 110);
+                                                  background-color: rgb(255, 141, 110); color: white; ">
+                                </li>
+                            </ul>
+                        </div>
+                        <i class="fa-solid fa-minus" style="color: rgb(255, 141, 110)"></i>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" id="genderDropdown4" type="button"
+                                    data-bs-toggle="dropdown"
+                                    style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
+                                종료 날짜
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown4">
+                                <li class="d-flex justify-content-center p-3">
+                                    <input type="text" placeholder="ex) 23.09.01"
+                                           style="width: 100%; border-radius: 10px 10px 10px 10px; border: solid 2px rgb(255, 141, 110);">
+                                </li>
+                                <li class="d-flex justify-content-center p-3">
+                                    <input type="button" value="확인"
+                                           style="width: 50%; border-radius: 10px 10px 10px 10px; border: solid 2px rgb(255, 141, 110);
+                                                  background-color: rgb(255, 141, 110); color: white;">
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle" type="button" id="genderDropdown4"
+                            <button class="btn btn-light dropdown-toggle" type="button" id="genderDropdown5"
                                     data-bs-toggle="dropdown"
                                     style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
-                                &nbsp;구분&nbsp;&nbsp;
+                                구분
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="genderDropdown4">
-                                <li><a class="dropdown-item" href="#">&nbsp;구분&nbsp;&nbsp;</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;성실&nbsp;&nbsp;</a></li>
-                                <li><a class="dropdown-item" href="#">&nbsp;불성실&nbsp;&nbsp;</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown5">
+                                <li><a class="dropdown-item" href="#">구분</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">성실</a></li>
+                                <li><a class="dropdown-item" href="#">불성실</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-1">a</div>
+                    <div class="col-1">
+                        <button type="button" class="search-button" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
+                            border: solid 2px rgb(255, 141, 110); width: 90%; height: 100%; color: white"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
+                            border: solid 2px rgb(255, 141, 110); width: 50%; height: 100%; color: white"><i
+                                class="fa-solid fa-rotate-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-2"></div>
     </div>
-    <div class="row">
-        <div class="col-2" style="background-color: #0dcaf0">a</div>
-        <div class="col-8" style="background-color: #6f42c1">a</div>
-        <div class="col-2" style="background-color: #75b798">a</div>
+    <div class="row" style="margin-top: 1%;">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div th:each="answer, loop : ${answerList}">
+                <div class="card card-body list-item"
+                     style="background-color: rgb(253,229,224); border-radius: 20px 20px 20px 20px;
+                            border: none; margin-top: 1.2%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                    <div class="row my-1">
+                        <span class="col-1 d-flex justify-content-center"></span>
+                        <span class="col-2 d-flex justify-content-center" th:if="${answer.gender == 1}">남성</span>
+                        <span class="col-2 d-flex justify-content-center" th:if="${answer.gender == 2}">여성</span>
+                        <span class="col-2 d-flex justify-content-center" th:text="${answer.age}"></span>
+                        <span class="col-3 d-flex justify-content-center"
+                              th:text="${#temporals.format(answer.createDate, 'yy.MM.dd')}"></span>
+                        <a class="col-2 d-flex justify-content-center" th:href="@{|/admin/detail/${answer.id}|}"
+                           th:if='${answer.resultMessage == "1"}'
+                           style="color: rgb(255, 141, 110); font-weight: 500;">성실</a>
+                        <a class="col-2 d-flex justify-content-center" th:href="@{|/admin/detail/${answer.id}|}"
+                           th:if='${answer.resultMessage == "2"}'
+                           style="color: #f21032; font-weight: 500;">불성실</a>
+                        <div class="col-1 d-flex justify-content-center"></div>
+                        <div class="col-1 d-flex justify-content-center"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div th:if="${!answerList.isEmpty()}">
+        <ul class="pagination justify-content-center" style="margin-top: 3%;">
+            <li class="page-item" th:classappend="${!answerList.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=0|}"
+                   th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; background-color: white; color: grey;' : 'border-right: none; border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angles-left"></i>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${!answerList.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${answerList.number-1}|}"
+                   th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+            </li>
+            <li th:each="page : ${#numbers.sequence(0, answerList.totalPages-1)}"
+                th:if="${page >= answerList.number-2 and page <= answerList.number+2}"
+                th:classappend="${page == answerList.number} ? 'active'" class="page-item">
+                <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"
+                   th:style="${page == answerList.number} ? 'font-weight: 800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: rgb(255, 141, 110); color: white;' : 'font-weight:800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'"></a>
+            </li>
+            <li class="page-item" th:classappend="${!answerList.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${answerList.number+1}|}"
+                   th:style="${!answerList.hasNext()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${!answerList.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${answerList.totalPages-1}|}"
+                   th:style="${!answerList.hasNext()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: 2px solid rgb(255, 141, 110); border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: 2px solid rgb(255, 141, 110); border-left:none; background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angles-right"></i>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
+
+
 </body>
 </html>

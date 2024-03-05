@@ -287,7 +287,7 @@ function chart5(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "비판적 사고 (6문항)",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(255,121,121)',
                     font: {
                         size: 15
                     }
@@ -338,7 +338,7 @@ function chart6(buttonValue) {
                 title: {
                     display: true, // 제목 끄기
                     text: "연령별 비교 (성실 응답자)",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(255,121,121)',
                     font: {
                         size: 15
                     }
@@ -410,7 +410,7 @@ function chart7(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "의사소통 (9문항)",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(255, 141, 110)',
                     font: {
                         size: 15
                     }
@@ -461,7 +461,7 @@ function chart8(buttonValue) {
                 title: {
                     display: true, // 제목 끄기
                     text: "연령별 비교",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(255, 141, 110)',
                     font: {
                         size: 15
                     }
@@ -530,7 +530,7 @@ function chart9(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "창의력 (6문항)",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(98,141,68)',
                     font: {
                         size: 15
                     }
@@ -581,7 +581,7 @@ function chart10(buttonValue) {
                 title: {
                     display: true, // 제목 끄기
                     text: "연령별 비교",
-                    color: 'rgb(255,255,255)',
+                    color: 'rgb(98,141,68)',
                     font: {
                         size: 15
                     }

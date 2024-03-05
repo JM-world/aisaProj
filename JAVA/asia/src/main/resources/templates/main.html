@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>설문앱메인</title>
-	<link rel="stylesheet" href="/css/style.css">
-	 <style>
-        .profile-card {position: relative;}
-     </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>설문앱메인</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .profile-card {
+            position: relative;
+        }
+    </style>
 </head>
 
 
 <body>
-	<section class="main">
-	  <div class="profile-card">
+<section class="main">
+    <div class="profile-card">
 
-	    <div class="data">
-	      <h2 style="font-size: 50px; font-weight: 200; line-height: 2; padding-top: 80px;">한국 청소년 활동 진흥원</h2>
-	      <span style="font-size: 30px; line-height: 2;">청소년을 대상으로 3대 역량(비판적 사고, 의사소통, 창의력)에 대한 설문 입니다.</span>
-	    </div>
-	    <div class="buttons">
-	      <a href="/select" class="btn">시작하기</a>
-	    </div>
-	</div>
-	
-	<div class="cursor">
-   	 <img src="img/chmo.png">
-	</div>
-	</section>
-	
-	<script>
-		//마우스 효과
-	document.addEventListener('mousemove', (e) => {
-    let mouseX = e.pageX + 3; // document의 x좌표값
-    let mouseY = e.pageY + 3; // document의 y좌표값
+        <div class="data">
+            <h2 style="font-size: 50px; font-weight: 200; line-height: 2; padding-top: 80px;">한국 청소년 활동 진흥원</h2>
+            <span style="font-size: 30px; line-height: 2;">청소년을 대상으로 3대 역량(비판적 사고, 의사소통, 창의력)에 대한 설문 입니다.</span>
+        </div>
+        <div class="buttons">
+            <a href="/select" class="btn">시작하기</a>
+        </div>
+        <div class="container">
+            <img src="/img/maingogo.png" style="width: 10%; position:relative; top: 235px; left: 430px;">
+            <span class="admin-login" onclick="location.href='/'">메인으로</span>
+        </div>
 
-    let cursor = document.querySelector('.cursor');
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-})
-		
-	</script>
+    </div>
+
+    <div class="cursor">
+        <img src="img/chmo.png">
+    </div>
+</section>
+
+<script>
+    //마우스 효과
+    document.addEventListener('mousemove', (e) => {
+        let mouseX = e.pageX + 3; // document의 x좌표값
+        let mouseY = e.pageY + 3; // document의 y좌표값
+
+        let cursor = document.querySelector('.cursor');
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top = mouseY + 'px';
+    })
+
+</script>
 </body>
 </html>

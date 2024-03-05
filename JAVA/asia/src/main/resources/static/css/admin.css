@@ -5,7 +5,7 @@ html, body {
     overflow-x: hidden;
 }
 body {
-    background-color: #343a40;
+    background-color: rgb(252, 241, 239);
 }
 
 .row-2 {
@@ -164,7 +164,7 @@ body {
 
 .main-card-top-1 .card-footer{
     border: none;
-    height: 20%;
+    height: 18%;
     background-color: white;
     border-radius: 25px;
     color: #343a40;
@@ -178,23 +178,23 @@ body {
 
 .main-card-bottom-1 {
     border: 3px solid rgb(255, 141, 110);
-    background-color: #343a40;
+    background-color: rgb(252, 241, 239);
     border-radius: 25px;
     height: 378px;
 }
 
 .main-card-bottom-1 .card-header {
     border-radius: 25px;
-    background-color: #343a40;
-    color: white;
+    background-color: rgb(252, 241, 239);
     font-weight: 700;
     border: none;
+
 }
 
 .main-card-bottom-2 {
     width: 100%;
     border-radius: 25px;
-    background-color: #343a40;
+    background-color: rgb(252, 241, 239);
     border: none;
     text-align: center;
 }
@@ -202,18 +202,19 @@ body {
 .main-card-bottom-3 {
     width: 100%;
     border: none;
-    background-color: #343a40;
-    color: white;
+    background-color: rgb(255, 182, 171);
+    color: #424242;
     border-radius: 10px;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 8px rgba(122, 122, 122, 0.5);
 
 }
 
 .main-card-bottom-4 {
-    background-color: #424b54;
-    color: white;
+    background-color: rgb(252, 215, 208);
+    border: none;
+    color: #6b6b6b;
     border-radius: 10px;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 8px rgba(122, 122, 122, 0.5);
 }
 
 .main-card-bottom-5 {
@@ -278,7 +279,7 @@ h2 .h2 {
 }
 
 .nav-link:hover {
-    color: rgb(255, 141, 110);
+    color: rgb(255,121,121);
 }
 
 .navbar-brand {
@@ -287,18 +288,22 @@ h2 .h2 {
     color: transparent;
     background-image: linear-gradient(
             180deg,
-            #ffffff,
-            rgb(252, 157, 131) 33%,
-            rgb(255, 141, 110) 45%,
-            rgb(255, 123, 87) 50%,
-            rgb(255, 211, 198) 66%,
-            rgb(255, 123, 87) 80%,
-            rgb(255, 141, 110)
+            rgb(255,121,121),
+            rgb(255,121,121) 10%,
+            rgb(255, 113, 113) 20%,
+            rgb(255,121,121) 30%,
+            rgb(255, 217, 217) 40%,
+            rgb(255, 179, 179) 50%,
+            rgb(255,121,121) 60%,
+            rgb(75, 36, 36) 70%,
+            rgb(185, 88, 88) 80%,
+            rgb(220, 105, 105) 90%,
+            rgb(255,121,121)
     );
     font-weight: 900;
     background-size: 100% 360%;
-    background-position-y: 0%;
-    animation: gradient 3s ease-in-out forwards;
+    background-position-y: 0;
+    animation: gradient 5s ease-in-out forwards;
 }
 
 .navbar-brand:hover {
@@ -307,7 +312,7 @@ h2 .h2 {
 
 @keyframes gradient {
     from {
-        background-position-y: 0%;
+        background-position-y: 0;
     }
     to {
         background-position-y: 100%;
@@ -319,7 +324,7 @@ h2 .h2 {
         background-position-y: 100%;
     }
     to {
-        background-position-y: 0%;
+        background-position-y: 0;
     }
 }
 
@@ -330,4 +335,12 @@ h2 .h2 {
 
 .dropdown-menu.show {
     width: 50%;
+}
+
+.list-item {
+    transition: transform 0.3s ease; /* 효과가 부드럽게 적용되도록 transition 속성 사용 */
+}
+
+.list-item:hover {
+    transform: scale(1.02); /* 원래 크기보다 5% 커지도록 설정 */
 }

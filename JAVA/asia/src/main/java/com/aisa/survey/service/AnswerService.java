@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.aisa.survey.entity.Answer;
@@ -146,7 +147,7 @@ public class AnswerService {
                 }
             }
             middle1 = middle1 / 6.0;
-            middle2 = middle2 / 6.0;
+            middle2 = middle2 / 9.0;
             middle3 = middle3 / 6.0;
             ageAvg.add(Math.round(middle1 * 10) / 10.0);
             ageAvg.add(Math.round(middle2 * 10) / 10.0);
@@ -169,9 +170,9 @@ public class AnswerService {
                     high3 += (Double) highOb[i];
                 }
             }
-            high1 = high1 / 9.0;
+            high1 = high1 / 6.0;
             high2 = high2 / 9.0;
-            high3 = high3 / 9.0;
+            high3 = high3 / 6.0;
             ageAvg.add(Math.round(high1 * 10) / 10.0);
             ageAvg.add(Math.round(high2 * 10) / 10.0);
             ageAvg.add(Math.round(high3 * 10) / 10.0);
@@ -194,7 +195,7 @@ public class AnswerService {
                 }
             }
             not1 = not1 / 6.0;
-            not2 = not2 / 6.0;
+            not2 = not2 / 9.0;
             not3 = not3 / 6.0;
             ageAvg.add(Math.round(not1 * 10) / 10.0);
             ageAvg.add(Math.round(not2 * 10) / 10.0);
@@ -210,6 +211,17 @@ public class AnswerService {
         age.add(this.answerRepository.highSchool());
         age.add(this.answerRepository.notSchool());
         return age;
+    }
+
+    public Page<Answer> filterAnswerAll(int page, int num, String gender, String age, String startDate, String endDate, String category, String search) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, num, Sort.by(sorts));
+
+        Specification<Answer> spec = AnswerRepository.FilterAnswerAll.filterByCriteria(gender, age, startDate, endDate, category);
+
+        return answerRepository.findAll(spec, pageable);
+
     }
 
 }

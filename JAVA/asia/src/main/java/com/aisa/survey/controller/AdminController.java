@@ -132,8 +132,29 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public String list() {
-        return "/admin/admin_list";
+    public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page,
+                       @RequestParam(value = "gender", defaultValue = "성별") String gender,
+                       @RequestParam(value = "age", defaultValue = "연령") String age,
+                       @RequestParam(value = "startDate", defaultValue = "시작 날짜") String startDate,
+                       @RequestParam(value = "endDate", defaultValue = "종료 날짜") String endDate,
+                       @RequestParam(value = "category", defaultValue = "구분") String category,
+                       @RequestParam(value = "search", defaultValue = "0") String search
+
+                       ) {
+
+
+//        Gson gson = new Gson();
+//        System.out.println(1);
+//        String answerStr = gson.toJson(answerList);
+//        System.out.println(2);
+        if (search.equals("1")) {
+            Page<Answer> answerList = this.answerService.filterAnswerAll(page, 7, gender, age, startDate, endDate, category, search);
+            model.addAttribute("answerList", answerList);
+            return "/admin/admin_list :: .list-item";
+        } else {
+            model.addAttribute("answerList", this.answerService.answerList(0, 7));
+            return "/admin/admin_list";
+        }
     }
 
     @GetMapping("/aaa")

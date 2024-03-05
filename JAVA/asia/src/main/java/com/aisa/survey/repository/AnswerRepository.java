@@ -1,18 +1,29 @@
 package com.aisa.survey.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.aisa.survey.entity.Answer;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Configuration
 @Repository
-public interface AnswerRepository extends JpaRepository<Answer, Integer>{
+public interface AnswerRepository extends JpaRepository<Answer, Integer>, JpaSpecificationExecutor<Answer> {
 
     @Query("SELECT COUNT(a.gender) FROM Answer a WHERE a.gender = 1")
     int countByGenderMale();
@@ -56,6 +67,48 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer>{
 
     @Query("SELECT COUNT(a.age) from Answer a where a.age >= 20 or a.age <= 13")
     int notSchool();
+
+
+    public class FilterAnswerAll {
+        public static Specification<Answer> filterByCriteria(String gender, String age, String startDate, String endDate, String category) {
+            return (Root<Answer> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+
+                // 성별 조건
+                if (!gender.equals("성별")) {
+                    predicates.add(cb.equal(root.get("gender"), gender.equals("남자") ? 1 : 2));
+                }
+
+                // 연령 조건
+                if (!age.equals("연령")) {
+                    if (age.equals("중학생")) {
+                        predicates.add(cb.between(root.get("age"), 14, 16));
+                    } else if (age.equals("고등학생")) {
+                        predicates.add(cb.between(root.get("age"), 17, 19));
+                    } else if (age.equals("기타")) {
+                        predicates.add(cb.or(cb.greaterThanOrEqualTo(root.get("age"), 20), cb.lessThanOrEqualTo(root.get("age"), 13)));
+                    }
+                }
+
+                // 날짜 조건
+                if (!"시작 날짜".equals(startDate) && !"종료 날짜".equals(endDate)) {
+                    predicates.add(cb.between(root.get("createDate"), startDate, endDate));
+                } else if (!"시작 날짜".equals(startDate)) {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("createDate"), startDate));
+                } else if (!"종료 날짜".equals(endDate)) {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("createDate"), endDate));
+                }
+
+                // 카테고리 조건
+                if (!category.equals("구분")) {
+                    predicates.add(cb.equal(root.get("resultMessage"), category.equals("성실") ? "1" : "2"));
+                }
+
+                return cb.and(predicates.toArray(new Predicate[0]));
+            };
+        }
+    }
+
 
 
 

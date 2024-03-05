@@ -59,7 +59,7 @@ public class MainController {
 	private static Instant etime;
 	
 	// 첫번째 [시작화면]
-	@GetMapping("/")
+	@GetMapping("/main")
 	public String mainPage(HttpSession session) {
 		this.obj = "";
 		// 방문자 수 카운트 -> 어드민 페이지에서 사용
@@ -210,6 +210,9 @@ public class MainController {
 //		model.addAttribute("obj", this.obj);
 		return "result";
 	}
-	
 
+	@GetMapping("/")
+	public String svelte() {
+		return "index";
+	}
 }
