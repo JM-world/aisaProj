@@ -1,10 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html layout:decorate="~{/admin/layout}">
 <body>
-
+<div layout:fragment="content">
+    <div class="row" style="margin-top: 3%;">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="card card-body"
+                 style="background-color: white; border-radius: 20px 20px 20px 20px;
+                            border: solid 3px rgb(255, 141, 110);">
+                <div class="row" style="height: 100%;">
+                    <div class="col-1" style="height: 100%;">
+                        <button class="btn" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
+                            border: solid 2px rgb(255, 141, 110);">
+                            <a th:href="@{/admin/main/main}" style="color: white;"><i class="fa-solid fa-chevron-left">&nbsp;메인</i>
+                            </a>
+                        </button>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="genderDropdown1"
+                                    data-bs-toggle="dropdown"
+                                    style="border: solid 2px rgb(255, 141, 110); background-color: white; color: rgb(255, 141, 110);">
+                                성별
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown1">
+                                <li><a class="dropdown-item" href="#">&nbsp;성별&nbsp;&nbsp;</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;남자&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;여자&nbsp;&nbsp;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="genderDropdown2"
+                                    data-bs-toggle="dropdown"
+                                    style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
+                                연령
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown2">
+                                <li><a class="dropdown-item" href="#">&nbsp;연령&nbsp;&nbsp;</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;중학생&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;고등학생&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;기타&nbsp;&nbsp;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-4" style="background-color: #ffd78e">
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" id="genderDropdown3" type="button"
+                                    data-bs-toggle="dropdown"
+                                    style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
+                                시작 날짜
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown3" style="width: 50%;">
+                                <li class="card-body" style="width: 50%;">
+                                    <input type="text" style="width: 50%;">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="genderDropdown4"
+                                    data-bs-toggle="dropdown"
+                                    style="border: solid 2px rgb(255, 141, 110); color: rgb(255, 141, 110);">
+                                &nbsp;구분&nbsp;&nbsp;
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="genderDropdown4">
+                                <li><a class="dropdown-item" href="#">&nbsp;구분&nbsp;&nbsp;</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;성실&nbsp;&nbsp;</a></li>
+                                <li><a class="dropdown-item" href="#">&nbsp;불성실&nbsp;&nbsp;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-1">a</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-2" style="background-color: #0dcaf0">a</div>
+        <div class="col-8" style="background-color: #6f42c1">a</div>
+        <div class="col-2" style="background-color: #75b798">a</div>
+    </div>
+</div>
 </body>
 </html>
