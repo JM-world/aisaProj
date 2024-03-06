@@ -16,8 +16,11 @@ import org.springframework.stereotype.Repository;
 import com.aisa.survey.entity.Answer;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,12 +94,30 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer>, JpaSpe
                 }
 
                 // 날짜 조건
+
+
+                // DateTimeFormatter를 사용하여 날짜 형식 지정
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+
                 if (!"시작 날짜".equals(startDate) && !"종료 날짜".equals(endDate)) {
-                    predicates.add(cb.between(root.get("createDate"), startDate, endDate));
+                    LocalDate start = LocalDate.parse(startDate, formatter);
+                    LocalDate end = LocalDate.parse(endDate, formatter).plusDays(1); // endDate의 다음 날짜를 지정하여 포함시킴
+                    ZonedDateTime startDateTime = start.atStartOfDay(ZoneId.systemDefault());
+                    ZonedDateTime endDateTime = end.atStartOfDay(ZoneId.systemDefault());
+                    Date startDateValue = Date.from(startDateTime.toInstant());
+                    Date endDateValue = Date.from(endDateTime.toInstant());
+                    predicates.add(cb.between(root.get("createDate"), startDateValue, endDateValue));
                 } else if (!"시작 날짜".equals(startDate)) {
-                    predicates.add(cb.greaterThanOrEqualTo(root.get("createDate"), startDate));
+                    LocalDate start = LocalDate.parse(startDate, formatter);
+                    ZonedDateTime startDateTime = start.atStartOfDay(ZoneId.systemDefault());
+                    Date startDateValue = Date.from(startDateTime.toInstant());
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("createDate"), startDateValue));
                 } else if (!"종료 날짜".equals(endDate)) {
-                    predicates.add(cb.lessThanOrEqualTo(root.get("createDate"), endDate));
+                    LocalDate end = LocalDate.parse(endDate, formatter).plusDays(1); // endDate의 다음 날짜를 지정하여 포함시킴
+                    ZonedDateTime endDateTime = end.atStartOfDay(ZoneId.systemDefault());
+                    Date endDateValue = Date.from(endDateTime.toInstant());
+                    predicates.add(cb.lessThanOrEqualTo(root.get("createDate"), endDateValue));
                 }
 
                 // 카테고리 조건

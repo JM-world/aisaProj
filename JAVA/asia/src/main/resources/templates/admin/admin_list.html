@@ -49,6 +49,56 @@
         });
 
         $(document).ready(function () {
+
+            updatePaginationButtons();
+
+            function updatePaginationButtons() {
+                var currentPage = parseInt($('#current-page').val());
+                var totalPages = parseInt($('#total-pages').val());
+
+                $('#pagination-container .page-link').each(function() {
+                    var page = $(this).data('page');
+
+                    if (page === currentPage || page < 0 || page >= totalPages) {
+                        $(this).addClass('disabled').removeAttr('href');
+                    } else {
+                        $(this).removeClass('disabled').attr('href', '#');
+                    }
+                });
+            }
+
+            // 페이지 링크 클릭 이벤트
+            $(document).on('click', '.page-link:not(.disabled)', function(e) {
+                e.preventDefault();
+
+                var page = $(this).data('page');
+
+                // 기존 필터링 조건 유지
+                var gender = $('#genderDropdown1').text().trim();
+                var age = $('#genderDropdown2').text().trim();
+                var startDate = $('#genderDropdown3').text().trim();
+                var endDate = $('#genderDropdown4').text().trim();
+                var category = $('#genderDropdown5').text().trim();
+                var search = "2";
+
+                // AJAX 요청
+                $.get('/admin/list', {
+                    page: page,
+                    gender: gender,
+                    age: age,
+                    startDate: startDate,
+                    endDate: endDate,
+                    category: category,
+                    search: search
+                }, function (data) {
+                    // 페이지 업데이트 (예: 목록을 포함하는 컨테이너의 HTML 교체)
+                    $("#result").replaceWith(data);
+                }).fail(function (xhr, status, error) {
+                    console.error('Error:', status, error);
+                });
+            });
+
+            // 필터링
             $('.fa-magnifying-glass').closest('button').click(function () {
                 var gender = $('#genderDropdown1').text().trim();
                 var age = $('#genderDropdown2').text().trim();
@@ -67,7 +117,7 @@
                     search: search
                 }, function (data) {
                     console.log('Response:', data);
-                    $(".list-item").replaceWith(data);
+                    $("#result").replaceWith(data);
                     // 서버 응답 처리
                 }).fail(function (xhr, status, error) {
                     console.error('Error:', status, error);
@@ -198,7 +248,8 @@
         </div>
         <div class="col-2"></div>
     </div>
-    <div class="row" style="margin-top: 1%;">
+    <div id="result">
+    <div class="row" style="margin-top: 1%;" id="filter">
         <div class="col-2"></div>
         <div class="col-8">
             <div th:each="answer, loop : ${answerList}">
@@ -228,39 +279,73 @@
         </div>
         <div class="col-2"></div>
     </div>
-    <div th:if="${!answerList.isEmpty()}">
+<!--    <div th:if="${!answerList.isEmpty()}" id="pagination-container">-->
+<!--        <ul class="pagination justify-content-center" style="margin-top: 3%;">-->
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:data-page="0"-->
+<!--                   th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; background-color: white; color: grey;' : 'border-right: none; border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); background-color: white; color: rgb(255, 141, 110);'">-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:data-page="${answerList.number-1}"-->
+<!--                   >-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li th:each="page : ${#numbers.sequence(0, answerList.totalPages-1)}"-->
+<!--                th:if="${page >= answerList.number-2 and page <= answerList.number+2}" class="page-item">-->
+<!--                <a class="page-link" th:data-page="${page}" th:text="${page+1}"-->
+<!--                   >-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:data-page="${answerList.number+1}"-->
+<!--                   >-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:data-page="${answerList.totalPages-1}"-->
+<!--                   >-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+    <div th:if="${!answerList.isEmpty()}" id="pagination-container">
         <ul class="pagination justify-content-center" style="margin-top: 3%;">
-            <li class="page-item" th:classappend="${!answerList.hasPrevious()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=0|}"
-                   th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; background-color: white; color: grey;' : 'border-right: none; border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); background-color: white; color: rgb(255, 141, 110);'">
-                    <i class="fa-solid fa-angles-left"></i>
+            <!-- First Page Link -->
+            <li class="page-item" th:class="${!answerList.hasPrevious() ? 'disabled' : ''}">
+                <a class="page-link" href="#" th:data-page="0" th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; background-color: white; color: grey;' : 'border-right: none; border-top: 2px solid rgb(255, 141, 110); border-left: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angles-left"></i></a>
+            </li>
+            <!-- Previous Page Link -->
+            <li class="page-item" th:class="${!answerList.hasPrevious() ? 'disabled' : ''}">
+                <a class="page-link" href="#" th:data-page="${answerList.number - 1}" th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
+                    <i class="fa-solid fa-angle-left"></i></a>
+            </li>
+            <!-- Page Numbers -->
+            <li th:each="pageNum : ${#numbers.sequence(0, answerList.totalPages - 1)}"
+                th:class="${pageNum == currentPage ? 'page-item active' : 'page-item'}"
+                th:if="${pageNum >= answerList.number-2 and pageNum <= answerList.number+2}">
+                <a class="page-link" href="#" th:data-page="${pageNum}" th:text="${pageNum + 1}"
+                   th:style="${pageNum == answerList.number} ? 'font-weight: 800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: rgb(255, 141, 110); color: white;' : 'font-weight:800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
+
                 </a>
             </li>
-            <li class="page-item" th:classappend="${!answerList.hasPrevious()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${answerList.number-1}|}"
-                   th:style="${!answerList.hasPrevious()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
-                    <i class="fa-solid fa-angle-left"></i>
-                </a>
-            </li>
-            <li th:each="page : ${#numbers.sequence(0, answerList.totalPages-1)}"
-                th:if="${page >= answerList.number-2 and page <= answerList.number+2}"
-                th:classappend="${page == answerList.number} ? 'active'" class="page-item">
-                <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"
-                   th:style="${page == answerList.number} ? 'font-weight: 800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: rgb(255, 141, 110); color: white;' : 'font-weight:800; border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'"></a>
-            </li>
-            <li class="page-item" th:classappend="${!answerList.hasNext()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${answerList.number+1}|}"
+            <!-- Next Page Link -->
+            <li class="page-item" th:class="${!answerList.hasNext() ? 'disabled' : ''}">
+                <a class="page-link" href="#" th:data-page="${answerList.number + 1}"
                    th:style="${!answerList.hasNext()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: none; border-left:none; background-color: white; color: rgb(255, 141, 110);'">
-                    <i class="fa-solid fa-angle-right"></i>
-                </a>
+                    <i class="fa-solid fa-angle-right"></i></a>
             </li>
-            <li class="page-item" th:classappend="${!answerList.hasNext()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${answerList.totalPages-1}|}"
+            <!-- Last Page Link -->
+            <li class="page-item" th:class="${!answerList.hasNext() ? 'disabled' : ''}">
+                <a class="page-link" href="#" th:data-page="${answerList.totalPages - 1}"
                    th:style="${!answerList.hasNext()} ? 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: 2px solid rgb(255, 141, 110); border-left:none; background-color: white; color: grey;' : 'border-top: 2px solid rgb(255, 141, 110); border-bottom: 2px solid rgb(255, 141, 110); border-right: 2px solid rgb(255, 141, 110); border-left:none; background-color: white; color: rgb(255, 141, 110);'">
-                    <i class="fa-solid fa-angles-right"></i>
-                </a>
+                    <i class="fa-solid fa-angles-right"></i></a>
             </li>
         </ul>
+        <input type="hidden" id="current-page" th:value="${answerList.number}" />
+        <input type="hidden" id="total-pages" th:value="${answerList.totalPages}" />
+    </div>
     </div>
 </div>
 

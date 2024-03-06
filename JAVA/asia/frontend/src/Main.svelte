@@ -247,7 +247,7 @@ def send_survey_results(all_sentence, question_set):
         {
             name: "OPEN AI API | GPT-4 X Nudge",
             description:
-                "설문에 대한 내용을 확인하기 위하여 OPEN AI API | GPT-4를 활용하여 넛지를 줄 수 있어요. 설문자의 설문 의지를 향상시켜 설문 응답율을 높일 수 있어요!",
+                "설문에 대한 내용을 확인하기 위하여 OPEN AI API | GPT-4를 활용하여 넛지를 줄 수 있어요. 설문자의 설문 의지를 향상시켜 설문 응답 성실도를 높일 수 있어요!",
         },
         {
             name: "친근한 UI, 넛지 말투",
@@ -255,7 +255,7 @@ def send_survey_results(all_sentence, question_set):
                 "설문자의 설문 의지를 향상시켜 설문 응답율을 높이기 위하여 청소년에 접근하기 쉬운 UI와 말투를 사용했어요! ",
         },
         {
-            name: "불성실 응답제거",
+            name: "불성실 응답 탐지",
             description:
                 "아래 논문을 기반으로 하여 AI 프롬프팅을 진행하여 신뢰도 높은 넛지를 주기 위하여 노력했어요.!",
         },
@@ -329,7 +329,7 @@ def send_survey_results(all_sentence, question_set):
                             {
                                 name: "사용자 친화적 UI/UX",
                                 description:
-                                    "고객 수요에 맞는 디자인 요소를 고민하는 등 여러가지 시장 수요에 적합한 프로덕트를 만들 수 있는 계기가 되었다.",
+                                    "고객 수요에 맞는 디자인 요소를 고민하는 등 여러가지 시장 수요에 적합한 프로덕트를 만들 수 있는 계기가 되었어요.",
                             },
                         ];
 </script>
@@ -372,7 +372,35 @@ def send_survey_results(all_sentence, question_set):
             />
         </div>
     </section>
-
+    <section id="projects" class="py-20 lg:py-32 flex flex-col gap-24">
+            <div class="flex flex-col gap-2 text-center">
+                <h3 class="font-semibold text-3xl sm:text-4xl md:text-5xl pb-5">
+                    <span class="poppins text-violet-400">주제 선정 배경</span>
+                </h3>
+                <div class="mt-11 grid lg:grid-cols-6 lg:gap-10">
+                    <div
+                    class="lg:col-start-2 lg:col-span-4 p-4 sm:p-6 md:p-8 flex flex-col
+                    gap-4 rounded-lg border border-solid border-violet-700 text-center group
+                    cursor-pointer hover:border-violet-400 duration-200"
+                    >
+                    <div
+                    class="bg-slate-950 grid place-items-center px-4 text-5xl md:text-6xl
+                    -mt-10 sm:-mt-12 md:-mt-14 lg:-mt-16 mx-auto duration-200"
+                    >
+                    <i class="fa-solid fa-object-ungroup"></i>
+                    </div>
+                    <div class="relative shadow-2xl grid place-items-center rounded-2xl border-2 border-violet-700">
+                        <!-- <WordCloud font={'Noto Sans KR'} words={words} backgroundColor=#4d377b/> -->
+                        <img
+                        src={"images/wordcloud2.jpg"}
+                        alt="Profile image"
+                        class="object-scale-down z-[2] max-h-[70vh] rounded-2xl"
+                    />
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
     <section id="projects" class="py-20 lg:py-32 flex flex-col gap-24">
         <div class="flex flex-col gap-2 text-center">
             <h3 class="font-semibold text-3xl sm:text-4xl md:text-5xl">
@@ -454,35 +482,6 @@ def send_survey_results(all_sentence, question_set):
         </div>
     </div>
     </section>
-    <section id="projects" class="py-20 lg:py-32 flex flex-col gap-24">
-        <div class="flex flex-col gap-2 text-center">
-            <h3 class="font-semibold text-3xl sm:text-4xl md:text-5xl pb-5">
-                <span class="poppins text-violet-400">주제 선정 배경</span>
-            </h3>
-            <div class="mt-11 grid lg:grid-cols-6 lg:gap-10">
-                <div
-                class="lg:col-start-2 lg:col-span-4 p-4 sm:p-6 md:p-8 flex flex-col
-                gap-4 rounded-lg border border-solid border-violet-700 text-center group
-                cursor-pointer hover:border-violet-400 duration-200"
-                >
-                <div
-                class="bg-slate-950 grid place-items-center px-4 text-5xl md:text-6xl
-                -mt-10 sm:-mt-12 md:-mt-14 lg:-mt-16 mx-auto duration-200"
-                >
-                <i class="fa-solid fa-object-ungroup"></i>
-                </div>
-                <div class="relative shadow-2xl grid place-items-center rounded-2xl border-2 border-violet-700">
-                    <!-- <WordCloud font={'Noto Sans KR'} words={words} backgroundColor=#4d377b/> -->
-                    <img
-                    src={"images/wordcloud2.jpg"}
-                    alt="Profile image"
-                    class="object-scale-down z-[2] max-h-[70vh] rounded-2xl"
-                />
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
     <section
         id="nudge"
         class="py-20 pt-10 lg:py-32 flex flex-col gap-16 sm:gap-20 md:gap-24 relative"
@@ -494,7 +493,7 @@ def send_survey_results(all_sentence, question_set):
         >
             <h6 class="text-lg sm:text-xl md:text-2xl"><strong class="text-violet-400">공공데이터</strong>를 기반한 <strong class="text-violet-400">청소년</strong> 대상 설문</h6>
             <h3 class="font-semibold text-3xl sm:text-4xl md:text-5xl">
-                <span class="poppins text-violet-400">넛지</span>를 이용한 설문 응답률 향상!!
+                <span class="poppins text-violet-400">넛지</span>를 이용한 설문 응답 품질 향상!!
             </h3>
         </div>
         
@@ -824,56 +823,75 @@ def send_survey_results(all_sentence, question_set):
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-center">
                         <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">
+                            <img class="h-10" src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=Svelte&logoColor=white">
                         </div>
                         <div>
                             <img class="h-10" src="https://img.shields.io/badge/FastAPI-000000?style=for-the-badge&logo=FastAPI&logoColor=white">
                         </div>
                         <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white">
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-center">
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/MariaDB-F80000?style=for-the-badge&logo=mariadb&logoColor=white">
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-center">
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
-                        </div>
-                        <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+                            <img class="h-10" src="https://img.shields.io/badge/Tailwindcss-79EDFF?style=for-the-badge&logo=tailwindcss&logoColor=white">
                         </div>
                         <div>
                             <img class="h-10" src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
                         </div>
                         <div>
-                            <img class="h-10" src="https://img.shields.io/badge/Tailwindcss-79EDFF?style=for-the-badge&logo=tailwindcss&logoColor=white">
+                            <img class="h-10" src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white">
+                        </div>
+
+                    </div>
+                    <div class="flex flex-row justify-center">
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/MariaDB-F80000?style=for-the-badge&logo=mariadb&logoColor=white">
+                        </div>
+
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white">
+                        </div>
+
+
+                    </div>
+                    <div class="flex flex-row justify-center">
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=OpenAI&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+                        </div>
+
+                    </div>
+                    <div class="flex flex-row justify-center">
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Font Awesome-528DD7?style=for-the-badge&logo=Font Awesome&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white">
+                        </div>
+                        <div>
+                            <img class="h-10" src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,77 @@
+<html layout:decorate="~{/admin/layout}">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Controller에서 넘어온 model 값을 읽을 수 있게 미리 id = chart를 불러온다.
+            // var chartDataElement1 = document.getElementById('chart1');
+            // var chartDataElement2 = document.getElementById('chart2');
+
+            // js파일 세팅
+            var script = document.createElement('script');
+            script.src = "/js/chart.js";
+            document.body.appendChild(script);
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row d-flex align-items-center" style="margin-top: 0.5%;">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="card card-body"
+                     style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); background-color: rgb(255,213,207); border: none; border-radius: 20px 20px 20px 20px;">
+                    <div class="row" style="height: 100%;">
+                        <div class="col-1" style="height: 100%;">
+                            <button class="btn" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
+                            border: solid 2px rgb(255, 141, 110); width: 60px;" onclick="history.back()" >
+                                <span style="color: white;"><i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="col-2 d-flex justify-content-center">
+<!--                            TODO 성별-->
+
+                        </div>
+                        <div class="col-2 d-flex justify-content-center">
+<!--                            TODO 연령-->
+                        </div>
+                        <div class="col-3 d-flex justify-content-center"
+                             style="display: flex; align-items: center;">
+<!--                            TODO 기간-->
+                        </div>
+                        <div class="col-2 d-flex justify-content-center">
+<!--                            TODO 구분-->
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row d-flex align-items-center" style="margin-top: 2%;">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="card main-card-top-1">
+                    <div class="card-body" style="height: 450px;">
+                        <canvas id="chart1" th:data-aaa-value='${vv}'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-2"></div>
+            <div class="col-8">
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

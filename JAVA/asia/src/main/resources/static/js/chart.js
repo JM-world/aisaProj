@@ -287,9 +287,10 @@ function chart5(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "비판적 사고 (6문항)",
-                    color: 'rgb(255,121,121)',
+                    color: 'rgb(66,75,255)',
                     font: {
-                        size: 15
+                        size: 25,
+
                     }
 
                 },
@@ -386,9 +387,9 @@ function chart7(buttonValue) {
                     label: '성실 응답자 데이터',
                     borderWidth: 2,
                     borderColor:
-                        'rgba(255,142,79)',
+                        'rgba(5,95,255)',
                     backgroundColor:
-                        'rgba(255,142,79,0.8)',
+                        'rgba(65,95,255,0.8)',
                 }]
         },
         options: {
@@ -410,9 +411,10 @@ function chart7(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "의사소통 (9문항)",
-                    color: 'rgb(255, 141, 110)',
+                    color: 'rgb(255,1,1)',
                     font: {
-                        size: 15
+                        size: 25,
+
                     }
 
                 },
@@ -440,13 +442,13 @@ function chart8(buttonValue) {
                 data: [data[1], data[4], data[7]],
                 borderWidth: 2,
                 borderColor: [
-                    'rgb(255,186,151)',
-                    'rgba(255,142,79)',
+                    'rgb(106,130,255)',
+                    'rgba(65,95,255)',
                     'rgb(154,154,154)'
                 ],
                 backgroundColor: [
-                    'rgb(255,186,151,0.8)',
-                    'rgba(255,142,79,0.8)',
+                    'rgb(106,130,255,0.8)',
+                    'rgba(65,95,255,0.8)',
                     'rgb(154,154,154,0.8)'
                 ]
             }]
@@ -460,8 +462,8 @@ function chart8(buttonValue) {
                 },
                 title: {
                     display: true, // 제목 끄기
-                    text: "연령별 비교",
-                    color: 'rgb(255, 141, 110)',
+                    text: "연령별 비교 (성실 응답자)",
+                    color: 'rgb(51,83,253)',
                     font: {
                         size: 15
                     }
@@ -506,9 +508,9 @@ function chart9(buttonValue) {
                     label: '성실 응답자 데이터',
                     borderWidth: 2,
                     borderColor:
-                        'rgb(175,255,121)',
+                        'rgba(89,178,26)',
                     backgroundColor:
-                        'rgba(175,255,121,0.8)',
+                        'rgba(89,178,26,0.8)',
                 }]
         },
         options: {
@@ -530,9 +532,10 @@ function chart9(buttonValue) {
                 title: {
                     display: true, // 제목 끄기/켜기
                     text: "창의력 (6문항)",
-                    color: 'rgb(98,141,68)',
+                    color: 'rgb(66,75,255)',
                     font: {
-                        size: 15
+                        size: 25,
+
                     }
 
                 },
@@ -560,13 +563,13 @@ function chart10(buttonValue) {
                 data: [data[2], data[5], data[8]],
                 borderWidth: 2,
                 borderColor: [
-                    'rgba(203,253,169)',
-                    'rgb(175,255,121)',
+                    'rgba(121,225,48)',
+                    'rgba(102,197,35)',
                     'rgb(154,154,154)'
                 ],
                 backgroundColor: [
-                    'rgba(203,253,169,0.8)',
-                    'rgba(175,255,121,0.8)',
+                    'rgba(121,225,48,0.8)',
+                    'rgba(89,178,26,0.8)',
                     'rgba(154,154,154,0.8)'
                 ]
             }]
@@ -580,7 +583,7 @@ function chart10(buttonValue) {
                 },
                 title: {
                     display: true, // 제목 끄기
-                    text: "연령별 비교",
+                    text: "연령별 비교 (성실 응답자)",
                     color: 'rgb(98,141,68)',
                     font: {
                         size: 15

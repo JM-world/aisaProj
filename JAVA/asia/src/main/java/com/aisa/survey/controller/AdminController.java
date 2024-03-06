@@ -1,5 +1,6 @@
 package com.aisa.survey.controller;
 
+import com.aisa.survey.entity.Admin;
 import com.aisa.survey.entity.AdminPage;
 import com.aisa.survey.entity.Answer;
 import com.aisa.survey.repository.AdminPageRepository;
@@ -37,8 +38,6 @@ public class AdminController {
     private final AdminPageService adminPageService;
 
     private final AnswerService answerService;
-
-    LocalDate localDate = LocalDate.now();
 
     @Value("${KEY.CODE}")
     private String KEY_CODE;
@@ -142,24 +141,22 @@ public class AdminController {
 
                        ) {
 
+        Page<Answer> answerList = this.answerService.filterAnswerAll(page, 7, gender, age, startDate, endDate, category, search);
+        model.addAttribute("answerList", answerList);
+        model.addAttribute("currentPage", answerList.getNumber());
+        model.addAttribute("totalPages", answerList.getTotalPages());
+        model.addAttribute("hasPrevious", answerList.hasPrevious());
+        model.addAttribute("hasNext", answerList.hasNext());
 
-//        Gson gson = new Gson();
-//        System.out.println(1);
-//        String answerStr = gson.toJson(answerList);
-//        System.out.println(2);
-        if (search.equals("1")) {
-            Page<Answer> answerList = this.answerService.filterAnswerAll(page, 7, gender, age, startDate, endDate, category, search);
-            model.addAttribute("answerList", answerList);
-            return "/admin/admin_list :: .list-item";
-        } else {
-            model.addAttribute("answerList", this.answerService.answerList(0, 7));
-            return "/admin/admin_list";
-        }
+        return search.equals("0") ? "/admin/admin_list" : "/admin/admin_list :: #result";
     }
 
-    @GetMapping("/aaa")
-    public String aaa() {
-        return "/admin/aaa";
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") int id, Model model) {
+        Answer member = this.answerService.findId(id);
+        model.addAttribute("vv", this.adminPageService.visitList("main"));
+        return "/admin/admin_detail";
     }
 
 }

@@ -3,6 +3,8 @@ package com.aisa.survey.service;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.aisa.survey.MemberNotFoundException;
+import com.aisa.survey.entity.Admin;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -222,6 +224,10 @@ public class AnswerService {
 
         return answerRepository.findAll(spec, pageable);
 
+    }
+
+    public Answer findId(int id) {
+        return this.answerRepository.findById(id).orElseThrow(MemberNotFoundException::new);
     }
 
 }
