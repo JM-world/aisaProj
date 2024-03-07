@@ -52,24 +52,24 @@ public class MainController {
 	String obj = "";
 
 	// 오늘 날짜
-	private static String TODAY = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+	private static final String TODAY = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
 	
 	// 설문 시간 측
 	private static Instant stime;
 	private static Instant etime;
-	
+
 	// 첫번째 [시작화면]
 	@GetMapping("/main")
 	public String mainPage(HttpSession session) {
 		this.obj = "";
 		// 방문자 수 카운트 -> 어드민 페이지에서 사용
-		Optional<AdminPage> adminPage = this.adminpageRepository.findByDate(this.TODAY);
+		Optional<AdminPage> adminPage = this.adminpageRepository.findByDate(TODAY);
 		if (adminPage.isPresent()) {
 			AdminPage adminPage1 = adminPage.get();
 			adminPage1.setVisitCount(adminPage1.getVisitCount() + 1);
 			this.adminpageRepository.save(adminPage1);
 		} else {
-			this.adminPageService.create(this.TODAY);
+			this.adminPageService.create(TODAY);
 		}
 
 		session.invalidate();
@@ -88,9 +88,9 @@ public class MainController {
 	// 두번째 [성별, 나이 입력 후 DB 저장]
 	@PostMapping("/select")
 	public String selectPost(HttpSession session, @ModelAttribute("requestDto") InfoRequestDto requestDto) {
-		int id = this.answerService.create(requestDto.getGender(), requestDto.getAge());
-		this.sessionId = id;
-		session.setAttribute("surveyId", id);
+//		int id = this.answerService.create(requestDto.getGender(), requestDto.getAge());
+//		this.sessionId = id;
+//		session.setAttribute("surveyId", id);
 		return "redirect:/survey/1";
 	}
 
@@ -114,11 +114,8 @@ public class MainController {
 	    page += 1;
 	    model.addAttribute("page", page);
 	    model.addAttribute("questionList", questionList);
-//	    if (page == 4) {
-//	    	page = 2;
-//	    }
 
-		// 각 페이지가 로딩될 때마다 로딩 바를 보이게 합니다.
+		// 각 페이지가 로딩될 때마다 로딩 바를 보이게 함.
 		model.addAttribute("showLoadingBar", true);
 		model.addAttribute("nudge", this.obj);
 		// survey.html은 질문 세트를 표시하는 템플릿 파일입니다.
@@ -142,11 +139,11 @@ public class MainController {
         if (page == 2) {
         	i = 1;
         	j = 6;
-        	this.answerService.update1(this.sessionId, answers);
+//        	this.answerService.update1(this.sessionId, answers);
         } else if (page == 3) {
         	i = 7;
         	j = 15;
-        	this.answerService.update2(this.sessionId, answers);
+//        	this.answerService.update2(this.sessionId, answers);
         } else {
         	i = 16;
         	j = 21;
@@ -158,13 +155,14 @@ public class MainController {
         URI uri = new URI(apiUrl);
         
         HashMap<String, Integer> body = new HashMap<>();
-        body.put("userId", this.sessionId);
-		
+//        body.put("userId", this.sessionId);
+        body.put("userId", 556);
+
         for (int k = i; k <= j; k++) {
         	String answerString = answers.get("answers[" + k + "]");
     		body.put("Q" + k, Integer.parseInt(answerString));
     	}
-	        
+
 		body.put("elapsedTime", elapsedTime);
 		
 		
@@ -186,16 +184,16 @@ public class MainController {
 		
 	    if (page == 4) {
 			System.out.println(obj.get("evaluation").toString());
-	    	this.answerService.update3(this.sessionId, answers, this.obj, obj.get("evaluation").toString());
+//	    	this.answerService.update3(this.sessionId, answers, this.obj, obj.get("evaluation").toString());
 
 			// 제출 수 카운트 -> 어드민 페이지에서 사용
-			Optional<AdminPage> adminPageSubmit = this.adminpageRepository.findByDate(this.TODAY);
+			Optional<AdminPage> adminPageSubmit = this.adminpageRepository.findByDate(TODAY);
 			if (adminPageSubmit.isPresent()) {
 				AdminPage adminPage1 = adminPageSubmit.get();
 				adminPage1.setSubmitCount(adminPage1.getSubmitCount() + 1);
 				this.adminpageRepository.save(adminPage1);
 			} else { // else 구문은 서버 환경에서는 필요 없음
-				this.adminPageService.create(this.TODAY);
+				this.adminPageService.create(TODAY);
 			}
 
 	    	return "redirect:/result";

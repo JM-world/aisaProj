@@ -181,6 +181,28 @@ async def create_user_answer(item: Item) -> None:
     return ai_answer
     `
 
+    const flutterSrc = `class QuestionRepository {
+
+    static Future firstCreateQuestion({
+        required List pointList,
+        }) async {
+
+        final dio = Dio();
+        const targetUrl = 'http://192.168.0.50:8000/create/answer';
+
+        final json = FirstQuestions(100, pointList[0], pointList[1], pointList[2], pointList[3],
+            pointList[4], pointList[5], 20).toJSon();
+
+        debugPrint(json.toString());
+
+        final resp = await dio.post(targetUrl, data: json);
+
+        debugPrint(resp.data['Answer']);
+
+        return resp.data['Answer'];
+        }
+    }`
+
     const openAi = `from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.schema import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
@@ -286,17 +308,22 @@ def send_survey_results(all_sentence, question_set):
                 ];
     
     let springMarias = [
-                            {
-                                name: "Spring Framework",
-                                description:
-                                    "Spring Framework를 사용하였어요. Spring Security를 사용하여 관리자만 Admin에 접속할 수 있어요!. Http 통신으로 FAST API 서버와 접속하여 넛지 데이터를 가져올 수 있어요!",
-                            },
-                            {
-                                name: "Maria DB, JPA, Svelte",
-                                description:
-                                    "Maria DB를 데이터베이스로 하여 JPA를 이용한 통신을 할 수 있어요! API 통신을 통하여 Python AI Server와 접속할 수 있어요! Landing Page를Svelte로 만들었어요!",
-                            },
-                        ];
+                                {
+                                    name: "Spring Framework",
+                                    description:
+                                        "Spring Framework를 사용하였어요. Spring Security를 사용하여 관리자만 Admin에 접속할 수 있어요!. Http 통신으로 FAST API 서버와 접속하여 넛지 데이터를 가져올 수 있어요!",
+                                },
+                                {
+                                    name: "Maria DB, JPA, Svelte",
+                                    description:
+                                        "Maria DB를 데이터베이스로 하여 JPA를 이용한 통신을 할 수 있어요! API 통신을 통하여 Python AI Server와 접속할 수 있어요! Landing Page를Svelte로 만들었어요!",
+                                },
+                                {
+                                    name: "Flutter X Android app Mockup",
+                                    description:
+                                        "Flutter를 통하여 Mockup 형태로 Android app으로 Porting을 진행하였어요!.",
+                                },
+                            ];
 
     let openPythons = [
                             {
@@ -630,7 +657,7 @@ def send_survey_results(all_sentence, question_set):
             <div class="flex flex-row justify-center">
                 <div>
                     <h3 class="font-semibold text-3xl sm:text-4xl md:text-5xl pt-4 pb-4">
-                        <span class="poppins text-violet-400">Spring</span>을 기반한 <strong class="text-violet-400">WAS</strong> Server
+                        <span class="poppins text-violet-400">Spring</span>을 기반한 <strong class="text-violet-400">WAS</strong>
                     </h3>
                 </div>
                 <div class="hidden sm:block">
@@ -657,6 +684,18 @@ def send_survey_results(all_sentence, question_set):
                     text-violet-400 sm:px-3 sm:ms-1 hover:bg-slate-800 cursor-pointer"
                     >
                         <img class="h-7" src="images/mariadbfoundation.svg">
+                    </button>
+                    <button
+                        class="ml-auto rounded-full aspect-square bg-indigo-300
+                        text-violet-400 sm:px-3 sm:ms-1 hover:bg-slate-800 cursor-pointer"
+                        >
+                            <img class="h-7" src="images/flutter.svg">
+                        </button>
+                        <button
+                        class="ml-auto rounded-full aspect-square bg-green-500
+                        text-violet-400 sm:px-3 sm:ms-1 hover:bg-slate-800 cursor-pointer"
+                        >
+                        <img class="h-7" src="images/android.svg">
                     </button>
                 </div>
             </div>
@@ -692,6 +731,9 @@ def send_survey_results(all_sentence, question_set):
                     </div>
                 <pre><h5>index.html</h5><code class="language-html">{svelteJava}</code></pre>
                     
+                {/if}
+                {#if index == 2}
+                    <pre><h5>question_repository.dart</h5><code class="language-java">{flutterSrc}</code></pre>
                 {/if}
             {/each}
         </div>

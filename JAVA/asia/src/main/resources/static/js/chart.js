@@ -272,13 +272,29 @@ function chart5(buttonValue) {
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true, // y축 시작점을 0으로 설정
-                    max: 5, // y축의 최대값을 명시적으로 5로 설정
+                yAxes: [{
                     ticks: {
-                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                        // y축 라벨 커스터마이즈
+                        callback: function(value, index, values) {
+                            // 여기서 value는 y축의 각 값, index는 인덱스, values는 전체 라벨 배열입니다.
+                            // value에 따라 원하는 라벨로 매핑합니다.
+                            const labels = [
+                                '1. 전혀 그렇지 않다.',
+                                '2. 그렇지 않다.',
+                                '3. 보통이다.',
+                                '4. 그렇다.',
+                                '5. 매우 그렇다.'
+                            ];
+                            // values 배열의 길이와 labels 배열의 길이가 동일하다고 가정합니다.
+                            return labels[index]; // 이 예제에서는 index를 사용했지만, value에 따라 다른 로직을 적용할 수도 있습니다.
+                        },
+                        // y축의 최소값과 최대값 설정
+                        min: 0,
+                        max: 4,
+                        // y축의 간격 설정
+                        stepSize: 1
                     }
-                }
+                }]
             },
             plugins: {
                 legend: {
@@ -332,6 +348,7 @@ function chart6(buttonValue) {
             }]
         },
         options: {
+
             plugins: {
                 legend: {
                     labels: {

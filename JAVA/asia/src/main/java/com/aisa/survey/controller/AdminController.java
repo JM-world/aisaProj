@@ -168,8 +168,8 @@ public class AdminController {
         model.addAttribute("resultMessage", member.getResultMessage()
                 .replaceAll("1\\. ['\"]?비판적 사고 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgb(250,91,91); font-size:1.2em; font-weight: 900;'>1. 비판적 사고 능력</b><br>")
                 .replaceAll("2\\. ['\"]?의사소통 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgba(5,95,255); font-size:1.2em; font-weight: 900;'>2. 의사소통 능력</b><br>")
-                .replaceAll("3\\. ['\"]?창의적 사고 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgb(64,129,19); font-size:1.2em; font-weight: 900;'>3. 창의적 사고 능력</b><br>"));
-
+                .replaceAll("3\\. ['\"]?창의적 사고 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgb(64,129,19); font-size:1.2em; font-weight: 900;'>3. 창의적 사고 능력</b><br>")
+                .replaceAll("전체 요약:", "<br><br><b style='background-color: white; font-size:1.2em; font-weight: 900;'>전체 요약</b><br>"));
 
         return "/admin/admin_detail";
     }
