@@ -271,7 +271,7 @@ function chart5(buttonValue) {
                     ticks: {
                         callback: function(value, index, values) {
                             const labels = [
-                                '-',
+                                ' ',
                                 '전혀 그렇지 않다',
                                 '그렇지 않다',
                                 '보통이다',
@@ -409,7 +409,7 @@ function chart7(buttonValue) {
                     ticks: {
                         callback: function(value, index, values) {
                             const labels = [
-                                '-',
+                                ' ',
                                 '전혀 그렇지 않다',
                                 '그렇지 않다',
                                 '보통이다',
@@ -545,7 +545,7 @@ function chart9(buttonValue) {
                     ticks: {
                         callback: function(value, index, values) {
                             const labels = [
-                                '-',
+                                ' ',
                                 '전혀 그렇지 않다',
                                 '그렇지 않다',
                                 '보통이다',
