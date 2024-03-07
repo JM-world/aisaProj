@@ -167,7 +167,7 @@
 
                     </div>
                     <div class="card-body main-card-bottom-2" style="margin-left: auto; margin-right: auto;">
-                        <div class="card main-card-bottom-3 p-1 ">
+                        <div class="card main-card-bottom-3 p-1">
                             <div class="row" style="font-weight: 900;">
                                 <span class="col-2">성별</span>
                                 <span class="col-2">나이</span>
@@ -178,7 +178,7 @@
 
 
                         <div th:each="answer, loop : ${answerList}" class="card main-card-bottom-4 p-1 mt-2 list-item">
-                            <div class="row my-1">
+                            <div class="row my-1" style="font-weight: 800;">
                                 <span class="col-2" th:if="${answer.gender == 1}">남성</span>
                                 <span class="col-2" th:if="${answer.gender == 2}">여성</span>
                                 <span class="col-2" th:text="${answer.age}"></span>
@@ -221,7 +221,7 @@
                             </div>
                             <div class="carousel-inner" style="height: 100%; display: flex;">
                                 <div class="carousel-item active" style="height: 100%;">
-                                    <div class="row" style="height: 90%; width: 90%; margin-left: 7%;">
+                                    <div class="row" style="height: 90%; width: 100%; margin-left: 3%;">
 
                                         <div class="col-7 chart-container"
                                              style="border-right: 2px solid rgb(255, 141, 110); height: 100%">
@@ -235,7 +235,7 @@
                                     </div>
                                 </div>
                                 <div class="carousel-item" style="height: 100%;">
-                                    <div class="row" style="height: 90%; width: 90%; margin-left: 7%;">
+                                    <div class="row" style="height: 90%; width: 100%; margin-left: 3%;">
 
                                         <div class="col-7 chart-container"
                                              style="border-right: 2px solid rgb(255, 141, 110); height: 100%">
@@ -249,7 +249,7 @@
                                     </div>
                                 </div>
                                 <div class="carousel-item" style="height: 100%;">
-                                    <div class="row" style="height: 90%; width: 90%; margin-left: 7%;">
+                                    <div class="row" style="height: 90%; width: 100%; margin-left: 3%;">
 
                                         <div class="col-7 chart-container"
                                              style="border-right: 2px solid rgb(255, 141, 110); height: 100%">

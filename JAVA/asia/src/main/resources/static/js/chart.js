@@ -240,85 +240,77 @@ function chart4(buttonValue) {
 
 function chart5(buttonValue) {
     var ct5 = document.getElementById('chart5');
-
-    var labels = yyyyMMdd(buttonValue);
-
-
+    var labels = yyyyMMdd(buttonValue); // 이 부분은 buttonValue를 처리하는 함수로 가정
     var avgBefore = JSON.parse(ct5.getAttribute('data-aaa-value'));
     var avgAfter = JSON.parse(ct5.getAttribute('data-bbb-value'));
+
     new Chart(ct5, {
         type: 'bar',
         data: {
-            labels: ['1번', '2번', '3번', '4번', '5번', '6번'],
-            datasets: [{
-                label: '일반 설문 진행 시',
-                data: [avgBefore[0], avgBefore[1], avgBefore[2], avgBefore[3], avgBefore[4], avgBefore[5]],
-                borderWidth: 2,
-                borderColor:
-                    'rgb(124,124,124)'
-                ,
-                backgroundColor:
-                    'rgba(124,124,124,0.8)',
-            },
+            labels: ['1번', '2번', '3번', '4번', '5번', '6번'], // 데이터 라벨
+            datasets: [
                 {
-                    data: [avgAfter[0], avgAfter[1], avgAfter[2], avgAfter[3], avgAfter[4], avgAfter[5]],
-                    label: '성실 응답자 데이터',
+                    label: '일반 설문 진행 시',
+                    data: avgBefore,
                     borderWidth: 2,
-                    borderColor:
-                        'rgb(255,121,121)',
-                    backgroundColor:
-                        'rgba(255,121,121,0.8)',
-                }]
+                    borderColor: 'rgb(124,124,124)',
+                    backgroundColor: 'rgba(124,124,124,0.8)',
+                },
+                {
+                    label: '성실 응답자 데이터',
+                    data: avgAfter,
+                    borderWidth: 2,
+                    borderColor: 'rgb(255,121,121)',
+                    backgroundColor: 'rgba(255,121,121,0.8)',
+                }
+            ]
         },
         options: {
             scales: {
-                yAxes: [{
+                y: { // Y축 설정
                     ticks: {
-                        // y축 라벨 커스터마이즈
                         callback: function(value, index, values) {
-                            // 여기서 value는 y축의 각 값, index는 인덱스, values는 전체 라벨 배열입니다.
-                            // value에 따라 원하는 라벨로 매핑합니다.
                             const labels = [
-                                '1. 전혀 그렇지 않다.',
-                                '2. 그렇지 않다.',
-                                '3. 보통이다.',
-                                '4. 그렇다.',
-                                '5. 매우 그렇다.'
+                                '-',
+                                '전혀 그렇지 않다',
+                                '그렇지 않다',
+                                '보통이다',
+                                '그렇다',
+                                '매우 그렇다'
                             ];
-                            // values 배열의 길이와 labels 배열의 길이가 동일하다고 가정합니다.
-                            return labels[index]; // 이 예제에서는 index를 사용했지만, value에 따라 다른 로직을 적용할 수도 있습니다.
+                            // value에 1을 더하여 labels 배열의 인덱스와 매핑합니다.
+                            // value가 0부터 시작하므로, labels 배열에서 올바른 라벨을 가져오기 위해
+                            // value + 1을 사용합니다.
+                                return labels[value]; // '+1'을 추가하여 인덱스를 조정
                         },
-                        // y축의 최소값과 최대값 설정
-                        min: 0,
-                        max: 4,
-                        // y축의 간격 설정
-                        stepSize: 1
+                        // y축의 라벨 개수를 정확히 제어하기 위해 max 값을 labels 배열의 길이보다 하나 작게 설정
+                        min: 0, // 최소값을 0으로 설정
+                        max: 5, // 최대값을 labels 배열의 실제 라벨 수(제외 '-')와 일치시키기 위해 5로 설정
+                        stepSize: 1 // 라벨 간격을 1로 설정
                     }
-                }]
+                }
             },
-            plugins: {
+            plugins: { // plugins 설정을 options 안으로 이동
                 legend: {
                     labels: {
                         color: 'rgb(154,154,154)',
                     }
                 },
                 title: {
-                    display: true, // 제목 끄기/켜기
+                    display: true,
                     text: "비판적 사고 (6문항)",
                     color: 'rgb(66,75,255)',
                     font: {
-                        size: 25,
-
+                        size: 25
                     }
-
-                },
-
+                }
             },
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: false // 이 설정들은 options 최상위에 위치해야 함
         }
-    })
+    });
 }
+
 
 function chart6(buttonValue) {
     var ct6 = document.getElementById('chart6');
@@ -413,11 +405,26 @@ function chart7(buttonValue) {
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true, // y축 시작점을 0으로 설정
-                    max: 5, // y축의 최대값을 명시적으로 5로 설정
+                y: { // Y축 설정
                     ticks: {
-                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                        callback: function(value, index, values) {
+                            const labels = [
+                                '-',
+                                '전혀 그렇지 않다',
+                                '그렇지 않다',
+                                '보통이다',
+                                '그렇다',
+                                '매우 그렇다'
+                            ];
+                            // value에 1을 더하여 labels 배열의 인덱스와 매핑합니다.
+                            // value가 0부터 시작하므로, labels 배열에서 올바른 라벨을 가져오기 위해
+                            // value + 1을 사용합니다.
+                            return labels[value]; // '+1'을 추가하여 인덱스를 조정
+                        },
+                        // y축의 라벨 개수를 정확히 제어하기 위해 max 값을 labels 배열의 길이보다 하나 작게 설정
+                        min: 0, // 최소값을 0으로 설정
+                        max: 5, // 최대값을 labels 배열의 실제 라벨 수(제외 '-')와 일치시키기 위해 5로 설정
+                        stepSize: 1 // 라벨 간격을 1로 설정
                     }
                 }
             },
@@ -534,11 +541,26 @@ function chart9(buttonValue) {
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true, // y축 시작점을 0으로 설정
-                    max: 5, // y축의 최대값을 명시적으로 5로 설정
+                y: { // Y축 설정
                     ticks: {
-                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                        callback: function(value, index, values) {
+                            const labels = [
+                                '-',
+                                '전혀 그렇지 않다',
+                                '그렇지 않다',
+                                '보통이다',
+                                '그렇다',
+                                '매우 그렇다'
+                            ];
+                            // value에 1을 더하여 labels 배열의 인덱스와 매핑합니다.
+                            // value가 0부터 시작하므로, labels 배열에서 올바른 라벨을 가져오기 위해
+                            // value + 1을 사용합니다.
+                            return labels[value]; // '+1'을 추가하여 인덱스를 조정
+                        },
+                        // y축의 라벨 개수를 정확히 제어하기 위해 max 값을 labels 배열의 길이보다 하나 작게 설정
+                        min: 0, // 최소값을 0으로 설정
+                        max: 5, // 최대값을 labels 배열의 실제 라벨 수(제외 '-')와 일치시키기 위해 5로 설정
+                        stepSize: 1 // 라벨 간격을 1로 설정
                     }
                 }
             },
