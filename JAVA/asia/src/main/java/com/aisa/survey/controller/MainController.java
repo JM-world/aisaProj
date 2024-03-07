@@ -185,7 +185,8 @@ public class MainController {
 	    
 		
 	    if (page == 4) {
-	    	this.answerService.update3(this.sessionId, answers, this.obj);
+			System.out.println(obj.get("evaluation").toString());
+	    	this.answerService.update3(this.sessionId, answers, this.obj, obj.get("evaluation").toString());
 
 			// 제출 수 카운트 -> 어드민 페이지에서 사용
 			Optional<AdminPage> adminPageSubmit = this.adminpageRepository.findByDate(this.TODAY);

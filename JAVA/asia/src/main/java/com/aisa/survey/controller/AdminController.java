@@ -155,7 +155,22 @@ public class AdminController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") int id, Model model) {
         Answer member = this.answerService.findId(id);
-        model.addAttribute("vv", this.adminPageService.visitList("main"));
+
+        // 성실 판단 전체 유저 평균
+        model.addAttribute("avgAfter", this.answerService.aiSurveyResultAfter());
+        // 해당 유저 문항
+        model.addAttribute("answerNums", this.answerService.answerNums(id));
+        // 해당 유저 정보
+        model.addAttribute("member", member);
+        // 제출일 표시
+        model.addAttribute("memberDate", member.getCreateDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+        // evaluation 표시
+        model.addAttribute("resultMessage", member.getResultMessage()
+                .replaceAll("1\\. ['\"]?비판적 사고 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgb(250,91,91); font-size:1.2em; font-weight: 900;'>1. 비판적 사고 능력</b><br>")
+                .replaceAll("2\\. ['\"]?의사소통 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgba(5,95,255); font-size:1.2em; font-weight: 900;'>2. 의사소통 능력</b><br>")
+                .replaceAll("3\\. ['\"]?창의적 사고 능력['\"]?:?", "<br><br><b style='background-color: white; color: rgb(64,129,19); font-size:1.2em; font-weight: 900;'>3. 창의적 사고 능력</b><br>"));
+
+
         return "/admin/admin_detail";
     }
 

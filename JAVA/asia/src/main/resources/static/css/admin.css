@@ -278,6 +278,11 @@ h2 .h2 {
     border-bottom: 1px solid rgb(255, 141, 110);
 }
 
+.nav-link {
+    color: rgb(185, 88, 88);
+    font-size: 1.2em;
+}
+
 .nav-link:hover {
     color: rgb(255,121,121);
 }

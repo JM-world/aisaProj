@@ -70,4 +70,6 @@ public class Answer {
 	
 	@Column(columnDefinition = "TEXT")
 	private String resultMessage;
+
+	private String evaluation;
 }

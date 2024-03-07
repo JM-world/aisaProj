@@ -66,7 +66,8 @@ function chart1(buttonValue) {
                 borderWidth: 2,
                 borderColor: 'rgba(255,0,0,0.5)',
                 lineTension: 0,
-                pointHoverRadius: 6,
+                pointHoverRadius: 8,
+                pointRadius: 6,
                 pointBorderColor: 'rgb(255,60,0)',
                 pointBackgroundColor: 'rgb(255,255,255)',
             }]
@@ -111,7 +112,8 @@ function chart2(buttonValue) {
                 borderWidth: 2,
                 borderColor: 'rgba(255,0,0,0.5)',
                 lineTension: 0,
-                pointHoverRadius: 6,
+                pointHoverRadius: 8,
+                pointRadius: 6,
                 pointBorderColor: 'rgb(255,60,0)',
                 pointBackgroundColor: 'rgb(255,255,255)',
             }]
@@ -602,6 +604,217 @@ function chart10(buttonValue) {
     })
 }
 
+function chart11(buttonValue) {
+    var ct11 = document.getElementById('chart11');
+
+    var detail = JSON.parse(ct11.getAttribute('data-aaa-value'));
+    var avgAfter = JSON.parse(ct11.getAttribute('data-bbb-value'));
+    new Chart(ct11, {
+        type: 'line',
+        data: {
+            labels: ['1번', '2번', '3번', '4번', '5번', '6번'],
+            datasets: [{
+                label: '성실 응답자 평균',
+                data: [avgAfter[0], avgAfter[1], avgAfter[2], avgAfter[3], avgAfter[4], avgAfter[5]],
+                borderWidth: 2,
+                pointHoverRadius: 8,
+                pointRadius: 6,
+                borderColor:
+                    'rgb(124,124,124)'
+                ,
+                backgroundColor:
+                    'rgba(124,124,124,0.8)',
+            },
+                {
+                    data: [detail[0], detail[1], detail[2], detail[3], detail[4], detail[5]],
+                    label: '현재 응답자',
+                    borderWidth: 2,
+                    pointHoverRadius: 8,
+                    pointRadius: 6,
+                    borderColor:
+                        'rgb(255,121,121)',
+                    backgroundColor:
+                        'rgba(255,121,121,0.8)',
+                }]
+        },
+        options: {
+
+            scales: {
+                y: {
+                    beginAtZero: true, // y축 시작점을 0으로 설정
+                    max: 6, // y축의 최대값을 명시적으로 5로 설정
+                    ticks: {
+                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgb(154,154,154)',
+                    }
+                },
+                title: {
+                    display: true, // 제목 끄기/켜기
+                    text: "비판적 사고 (6문항)",
+                    color: 'rgb(250,91,91)',
+                    font: {
+                        size: 25,
+
+                    }
+
+                },
+
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    })
+}
+
+function chart12(buttonValue) {
+    var ct12 = document.getElementById('chart12');
+
+
+    var detail = JSON.parse(ct12.getAttribute('data-aaa-value'));
+    var avgAfter = JSON.parse(ct12.getAttribute('data-bbb-value'));
+    new Chart(ct12, {
+        type: 'line',
+        data: {
+            labels: ['7번', '8번', '9번', '10번', '11번', '12번', '13번', '14번', '15번'],
+            datasets: [{
+                label: '성실 응답자 평균',
+                data: [avgAfter[6], avgAfter[7], avgAfter[8], avgAfter[9], avgAfter[10], avgAfter[11],
+                    avgAfter[12], avgAfter[13], avgAfter[14]],
+                borderWidth: 2,
+                pointHoverRadius: 8,
+                pointRadius: 6,
+                borderColor:
+                    'rgb(124,124,124)'
+                ,
+                backgroundColor:
+                    'rgba(124,124,124,0.8)',
+            },
+                {
+                    // 실제 데이터
+                    data: [detail[6], detail[7], detail[8], detail[9], detail[10], detail[11],
+                        detail[12], detail[13], detail[14]],
+                    label: '현재 응답자',
+                    borderWidth: 2,
+                    pointHoverRadius: 8,
+                    pointRadius: 6,
+                    borderColor:
+                        'rgba(5,95,255)',
+                    backgroundColor:
+                        'rgba(65,95,255,0.8)',
+                }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true, // y축 시작점을 0으로 설정
+                    max: 6, // y축의 최대값을 명시적으로 5로 설정
+                    ticks: {
+                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgb(154,154,154)',
+                    }
+                },
+                title: {
+                    display: true, // 제목 끄기/켜기
+                    text: "의사소통 (9문항)",
+                    color: 'rgba(5,95,255)',
+                    font: {
+                        size: 25,
+
+                    }
+
+                },
+
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    })
+}
+
+function chart13(buttonValue) {
+    var ct13 = document.getElementById('chart13');
+
+    var labels = yyyyMMdd(buttonValue);
+
+
+    var avgBefore = JSON.parse(ct13.getAttribute('data-aaa-value'));
+    var avgAfter = JSON.parse(ct13.getAttribute('data-bbb-value'));
+    new Chart(ct13, {
+        type: 'line',
+        data: {
+            labels: ['16번', '17번', '18번', '19번', '20번', '21번'],
+            datasets: [{
+                label: '성실 응답자 평균',
+                data: [avgAfter[15], avgAfter[16], avgAfter[17], avgAfter[18], avgAfter[19], avgAfter[20]],
+                borderWidth: 2,
+                pointHoverRadius: 8,
+                pointRadius: 6,
+                borderColor:
+                    'rgb(124,124,124)'
+                ,
+                backgroundColor:
+                    'rgba(124,124,124,0.8)',
+            },
+                {
+                    data: [avgBefore[15], avgBefore[16], avgBefore[17], avgBefore[18], avgBefore[19], avgBefore[20]],
+                    label: '현재 응답자',
+                    borderWidth: 2,
+                    pointHoverRadius: 8,
+                    pointRadius: 6,
+                    borderColor:
+                        'rgba(89,178,26)',
+                    backgroundColor:
+                        'rgba(89,178,26,0.8)',
+                }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true, // y축 시작점을 0으로 설정
+                    max: 6, // y축의 최대값을 명시적으로 5로 설정
+                    ticks: {
+                        stepSize: 1 // y축의 틱 간격을 1로 설정
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgb(154,154,154)',
+                    }
+                },
+                title: {
+                    display: true, // 제목 끄기/켜기
+                    text: "창의력 (6문항)",
+                    color: 'rgb(64,129,19)',
+                    font: {
+                        size: 25,
+
+                    }
+
+                },
+
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    })
+}
+
+
+
 if (document.getElementById('chart1')) {
     chart1();
 }
@@ -631,5 +844,14 @@ if (document.getElementById('chart9')) {
 }
 if (document.getElementById('chart10')) {
     chart10();
+}
+if (document.getElementById('chart11')) {
+    chart11();
+}
+if (document.getElementById('chart12')) {
+    chart12();
+}
+if (document.getElementById('chart13')) {
+    chart13();
 }
 

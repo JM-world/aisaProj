@@ -136,7 +136,9 @@
                         <div class="card main-card-top-1">
                             <div class="card-header">성별 분포</div>
                             <div class="card-body rounded-bottom" style="height: 90%; width: 100%;">
+                                <div class="card-body" style="height: 100%; width: 100%;">
                                 <canvas id="chart3" th:data-aaa-value='${genderRatio}'></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -185,10 +187,10 @@
                                 <span class="col-4"
                                       th:text="${#temporals.format(answer.createDate, 'yy.MM.dd')}"></span>
                                 <a class="col-4" th:href="@{|/admin/detail/${answer.id}|}"
-                                   th:if='${answer.resultMessage == "1"}'
+                                   th:if='${answer.evaluation == "1"}'
                                    style="color: rgb(255, 141, 110); font-weight: 500;">성실</a>
                                 <a class="col-4" th:href="@{|/admin/detail/${answer.id}|}"
-                                   th:if='${answer.resultMessage == "2"}'
+                                   th:if='${answer.evaluation == "2"}'
                                    style="color: #f21032; font-weight: 500;">불성실</a>
 
                             </div>

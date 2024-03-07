@@ -14,61 +14,93 @@
             script.src = "/js/chart.js";
             document.body.appendChild(script);
         });
+
+        /*<![CDATA[*/
+        var message = /*[[${resultMessage}]]*/ '기본값';
+        /*]]>*/
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('result').innerHTML = message;
+        });
     </script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid">
-        <div class="row d-flex align-items-center" style="margin-top: 0.5%;">
+        <div class="row d-flex align-items-center" style="margin-top: 1%;">
             <div class="col-2"></div>
             <div class="col-8">
                 <div class="card card-body"
                      style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); background-color: rgb(255,213,207); border: none; border-radius: 20px 20px 20px 20px;">
                     <div class="row" style="height: 100%;">
-                        <div class="col-1" style="height: 100%;">
+                        <div class="col-1 d-flex justify-content-center align-items-center" style="height: 100%;" >
                             <button class="btn" style="background-color: rgb(255, 141, 110); border-radius: 10px 10px 10px 10px;
-                            border: solid 2px rgb(255, 141, 110); width: 60px;" onclick="history.back()" >
+                            border: solid 2px rgb(185, 88, 88); width: 60px;" onclick="history.back()" >
                                 <span style="color: white;"><i class="fa-solid fa-chevron-left"></i>
                                 </span>
                             </button>
                         </div>
-                        <div class="col-2 d-flex justify-content-center">
+                        <div class="col-2 d-flex justify-content-center align-items-center">
 <!--                            TODO 성별-->
-
+                            <div th:if="${member.gender==1}" style="font-size: 1.2em; font-weight: 900; color: rgb(61,93,255)"><i class="fa-solid fa-child-reaching" style="font-size: 1.5em;"></i> 남성</div>
+                            <div th:if="${member.gender==2}" style="font-size: 1.2em; font-weight: 700; color: rgb(255,61,61)"><i class="fa-solid fa-child-dress" style="font-size: 1.5em;"></i> 여성</div>
                         </div>
-                        <div class="col-2 d-flex justify-content-center">
+                        <div class="col-2 d-flex justify-content-center align-items-center">
 <!--                            TODO 연령-->
+                            <div style="font-size: 1.2em; font-weight: 900; color: rgb(44,44,44)">[[${member.age}]] 세</div>
                         </div>
-                        <div class="col-3 d-flex justify-content-center"
-                             style="display: flex; align-items: center;">
+                        <div class="col-3 d-flex justify-content-center align-items-center">
 <!--                            TODO 기간-->
+                            <div style="font-size: 1.2em; font-weight: 900; color: rgb(44,44,44)">[[${memberDate}]] 제출</div>
                         </div>
-                        <div class="col-2 d-flex justify-content-center">
+                        <div class="col-3 d-flex justify-content-center align-items-center">
 <!--                            TODO 구분-->
+                            <span th:if="${member.evaluation=='1'}" style="font-size: 1.2em; font-weight: 900; color: rgb(32,134,47)">성실 응답자 </span>
+                            <div th:if="${member.evaluation=='1'}" style="font-size: 1.9em;">&nbsp;😊</div>
+                            <span th:if="${member.evaluation=='2'}" style="font-size: 1.2em; font-weight: 900; color: rgb(248,34,34)">불성실 응답자 </span>
+                            <div th:if="${member.evaluation=='2'}" style="font-size: 1.9em;">&nbsp;☹️</div>
                         </div>
                         <div class="col-1"></div>
-                        <div class="col-1"></div>
                     </div>
                 </div>
             </div>
             <div class="col-2"></div>
         </div>
-        <div class="row d-flex align-items-center" style="margin-top: 2%;">
+        <div class="row" style="margin-top: 1%;">
             <div class="col-2"></div>
             <div class="col-8">
-                <div class="card main-card-top-1">
-                    <div class="card-body" style="height: 450px;">
-                        <canvas id="chart1" th:data-aaa-value='${vv}'></canvas>
-                    </div>
+                <div class="card card-body"
+                     style="background-color: rgb(253,229,224); border-radius: 20px 20px 20px 20px;
+                            border: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); min-height: 300px;">
+                    <div id="result"></div>
                 </div>
             </div>
             <div class="col-2"></div>
         </div>
-        <div class="row" style="margin-top: 2%;">
-            <div class="col-2"></div>
-            <div class="col-8">
+        <div class="row" style="margin-top: 1%;">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <div class="card main-card-top-1" style="border: 3px solid rgba(255,121,121)">
+                    <div class="card-body" style="height: 370px;">
+                        <canvas id="chart11" th:data-aaa-value='${answerNums}' th:data-bbb-value='${avgAfter}'></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-4">
+                <div class="card main-card-top-1" style="border: 3px solid rgba(5,95,255)">
+                    <div class="card-body" style="height: 370px;">
+                        <canvas id="chart12" th:data-aaa-value='${answerNums}' th:data-bbb-value='${avgAfter}'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card main-card-top-1" style="border: 3px solid rgb(64,129,19)">
+                    <div class="card-body" style="height: 370px;">
+                        <canvas id="chart13" th:data-aaa-value='${answerNums}' th:data-bbb-value='${avgAfter}'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
         </div>
     </div>
 

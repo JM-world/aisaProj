@@ -41,24 +41,24 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer>, JpaSpe
 
     @Query("SELECT AVG(a.a1), AVG(a.a2), AVG(a.a3), AVG(a.a4), AVG(a.a5), AVG(a.a6)" +
             ", AVG(a.a7), AVG(a.a8), AVG(a.a9), AVG(a.a10), AVG(a.a11), AVG(a.a12), AVG(a.a13), AVG(a.a14), AVG(a.a15)" +
-            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a WHERE a.resultMessage = '1'")
+            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a WHERE a.evaluation = '1'")
     List<Object[]> aiSurveyResultAfter();
 
 
     // 아래부터 주제별 연령 백분율
     @Query("SELECT AVG(a.a1), AVG(a.a2), AVG(a.a3), AVG(a.a4), AVG(a.a5), AVG(a.a6)" +
             ", AVG(a.a7), AVG(a.a8), AVG(a.a9), AVG(a.a10), AVG(a.a11), AVG(a.a12), AVG(a.a13), AVG(a.a14), AVG(a.a15)" +
-            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 14 and a.age <=16 and a.resultMessage = '1'")
+            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 14 and a.age <=16 and a.evaluation = '1'")
     List<Object[]> middleSchoolAvg();
 
     @Query("SELECT AVG(a.a1), AVG(a.a2), AVG(a.a3), AVG(a.a4), AVG(a.a5), AVG(a.a6)" +
             ", AVG(a.a7), AVG(a.a8), AVG(a.a9), AVG(a.a10), AVG(a.a11), AVG(a.a12), AVG(a.a13), AVG(a.a14), AVG(a.a15)" +
-            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 17 and a.age <=19 and a.resultMessage = '1'")
+            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 17 and a.age <=19 and a.evaluation = '1'")
     List<Object[]> highSchoolAvg();
 
     @Query("SELECT AVG(a.a1), AVG(a.a2), AVG(a.a3), AVG(a.a4), AVG(a.a5), AVG(a.a6)" +
             ", AVG(a.a7), AVG(a.a8), AVG(a.a9), AVG(a.a10), AVG(a.a11), AVG(a.a12), AVG(a.a13), AVG(a.a14), AVG(a.a15)" +
-            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 20 or a.age <=13 and a.resultMessage = '1'")
+            ", AVG(a.a16), AVG(a.a17), AVG(a.a18), AVG(a.a19), AVG(a.a20), AVG(a.a21) FROM Answer a where a.age >= 20 or a.age <=13 and a.evaluation = '1'")
     List<Object[]> notSchoolAvg();
 
 
@@ -122,7 +122,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer>, JpaSpe
 
                 // 카테고리 조건
                 if (!category.equals("구분")) {
-                    predicates.add(cb.equal(root.get("resultMessage"), category.equals("성실") ? "1" : "2"));
+                    predicates.add(cb.equal(root.get("evaluation"), category.equals("성실") ? "1" : "2"));
                 }
 
                 return cb.and(predicates.toArray(new Predicate[0]));

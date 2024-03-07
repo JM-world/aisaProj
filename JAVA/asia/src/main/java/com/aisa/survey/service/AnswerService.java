@@ -64,7 +64,7 @@ public class AnswerService {
         }
     }
 
-    public void update3(int sessionId, Map<String, String> answers, String obj) {
+    public void update3(int sessionId, Map<String, String> answers, String obj, String eval) {
         Optional<Answer> optionalAnswer = answerRepository.findById(sessionId);
         if (optionalAnswer.isPresent()) {
             Answer answer = optionalAnswer.get();
@@ -75,6 +75,7 @@ public class AnswerService {
             answer.setA20(Integer.parseInt(answers.get("answers[" + 20 + "]")));
             answer.setA21(Integer.parseInt(answers.get("answers[" + 21 + "]")));
             answer.setResultMessage(obj);
+            answer.setEvaluation(eval);
             this.answerRepository.save(answer);
         }
     }
@@ -223,6 +224,36 @@ public class AnswerService {
         Specification<Answer> spec = AnswerRepository.FilterAnswerAll.filterByCriteria(gender, age, startDate, endDate, category);
 
         return answerRepository.findAll(spec, pageable);
+
+    }
+
+    public List<Integer> answerNums(int id) {
+        List<Integer> answerNums = new ArrayList<>();
+        Answer answer = this.answerRepository.findById(id).orElseThrow(MemberNotFoundException::new);
+
+        answerNums.add(answer.getA1());
+        answerNums.add(answer.getA2());
+        answerNums.add(answer.getA3());
+        answerNums.add(answer.getA4());
+        answerNums.add(answer.getA5());
+        answerNums.add(answer.getA6());
+        answerNums.add(answer.getA7());
+        answerNums.add(answer.getA8());
+        answerNums.add(answer.getA9());
+        answerNums.add(answer.getA10());
+        answerNums.add(answer.getA11());
+        answerNums.add(answer.getA12());
+        answerNums.add(answer.getA13());
+        answerNums.add(answer.getA14());
+        answerNums.add(answer.getA15());
+        answerNums.add(answer.getA16());
+        answerNums.add(answer.getA17());
+        answerNums.add(answer.getA18());
+        answerNums.add(answer.getA19());
+        answerNums.add(answer.getA20());
+        answerNums.add(answer.getA21());
+
+        return answerNums;
 
     }
 

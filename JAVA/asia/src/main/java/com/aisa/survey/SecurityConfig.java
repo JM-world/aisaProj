@@ -22,7 +22,11 @@ public class SecurityConfig {
 				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 				.formLogin((formLogin) -> formLogin
 						.loginPage("/admin/login")
-						.defaultSuccessUrl("/admin/main/main"));
+						.defaultSuccessUrl("/admin/main/main"))
+				.logout((logout) -> logout
+						.logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
+						.logoutSuccessUrl("/")
+						.invalidateHttpSession(true));
 		
 		return http.build();
 	}
